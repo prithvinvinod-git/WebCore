@@ -68,3 +68,8 @@ export class ScanOrchestrator {
     }
   }
 }
+
+export async function scanUrl(url: string): Promise<ScanResult> {
+  const orchestrator = new ScanOrchestrator()
+  return orchestrator.runFullScan({ url })
+}

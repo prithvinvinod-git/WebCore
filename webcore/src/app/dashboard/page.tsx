@@ -1,4 +1,5 @@
 "use client"
+import { useEffect } from "react"
 import { useScanStore } from "@/store/scan-store"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { ScoreCard } from "@/components/ui/score-card"
@@ -15,8 +16,15 @@ const moduleMeta = [
 ] as const
 
 export default function DashboardPage() {
-  const { scans, isScanning } = useScanStore()
+  const { scans, isScanning, setScans } = useScanStore()
   const latestScan = scans[0]
+
+  useEffect(() => {
+    fetch("/api/v1/scans?limit=5")
+      .then((r) => r.json())
+      .then((data) => setScans(data.scans || []))
+      .catch(() => {})
+  }, [setScans])
 
   return (
     <div className="max-w-[1200px] mx-auto px-6 py-8">
@@ -82,7 +90,9 @@ export default function DashboardPage() {
             <CardContent className="p-4">
               <div className="flex items-center gap-4 text-sm">
                 <span className="text-[#0a0a0a] font-medium">{latestScan.url}</span>
-                <Pill variant="green">Score: {latestScan.overallScore}</Pill>
+                <Pill variant={latestScan.overallScore >= 70 ? "success" : latestScan.overallScore >= 50 ? "warning" : "error"}>
+                  Score: {latestScan.overallScore}
+                </Pill>
                 <span className="text-[#737373]">{latestScan.durationMs}ms</span>
                 <span className="text-[#737373]">{new Date(latestScan.createdAt).toLocaleDateString()}</span>
               </div>

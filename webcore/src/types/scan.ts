@@ -223,10 +223,45 @@ export interface CertInfo {
   daysRemaining: number
 }
 
+export interface WCAGCheck {
+  category: string
+  passed: number
+  total: number
+  score: number
+  critical: number
+}
+
+export interface ScreenReaderCheck {
+  optimal: boolean
+  issuesFound: number
+  allImagesLabelled: boolean
+  headingStructure: boolean
+  ariaLive: boolean
+  keyboardNavigable: boolean
+}
+
+export interface ContrastCheck {
+  passed: boolean
+  failingElements: string[]
+  recommendations: string[]
+  smallTextRatio: string
+  largeTextRatio: string
+}
+
+export interface AutoAudit {
+  passed: number
+  failed: number
+  total: number
+}
+
 export interface AccessibilityResult {
   score: number
   grade: string
   findings: Finding[]
+  wcagChecks: WCAGCheck[]
+  screenReader: ScreenReaderCheck
+  contrast: ContrastCheck
+  autoAudit: AutoAudit
 }
 
 export interface MonitorConfig {

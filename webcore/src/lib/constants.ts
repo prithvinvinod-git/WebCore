@@ -50,3 +50,14 @@ export const ENGINE_NAMES = [
   "mistral",
   "grok",
 ] as const
+
+export const MODULE_LABELS: Record<string, string> = {
+  security: "Security",
+  seo: "SEO",
+  aeo: "AEO",
+  performance: "Performance",
+  indexing: "Indexing",
+  aiReadiness: "AI Readiness",
+  domain: "Domain Health",
+  accessibility: "Accessibility",
+}

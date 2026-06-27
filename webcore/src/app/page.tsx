@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Shield, Globe, Search, BarChart3 } from "lucide-react"
+import { Shield, Globe, Search, BarChart3, BookOpen, CreditCard } from "lucide-react"
 
 const features = [
   {
@@ -38,14 +38,12 @@ export default function Home() {
             <Shield size={22} className="text-[#0a0a0a]" />
             <span className="font-semibold text-base">WebCore</span>
           </div>
-          <div className="flex items-center gap-3">
-            <Link href="/dashboard">
-              <Button variant="ghost" size="sm">
-                Dashboard
-              </Button>
-            </Link>
-            <Link href="/dashboard/new">
-              <Button size="sm">New Scan</Button>
+          <div className="flex items-center gap-4">
+            <Link href="/docs" className="text-sm text-[#737373] hover:text-[#0a0a0a]">Docs</Link>
+            <Link href="/pricing" className="text-sm text-[#737373] hover:text-[#0a0a0a]">Pricing</Link>
+            <Link href="/auth/login" className="text-sm font-medium text-[#0a0a0a]">Sign in</Link>
+            <Link href="/auth/signup">
+              <Button size="sm">Get started</Button>
             </Link>
           </div>
         </div>
@@ -97,7 +95,11 @@ export default function Home() {
       <footer className="border-t border-[#e5e5e5]">
         <div className="max-w-[1200px] mx-auto px-6 py-6 flex items-center justify-between text-xs text-[#737373]">
           <span>&copy; {new Date().getFullYear()} WebCore</span>
-          <span>Single Pane of Glass for Your Website</span>
+          <div className="flex items-center gap-4">
+            <Link href="/docs" className="hover:text-[#0a0a0a]">Docs</Link>
+            <Link href="/pricing" className="hover:text-[#0a0a0a]">Pricing</Link>
+            <Link href="/auth/login" className="hover:text-[#0a0a0a]">Sign in</Link>
+          </div>
         </div>
       </footer>
     </div>

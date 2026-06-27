@@ -1,41 +1,45 @@
 import { NextRequest, NextResponse } from "next/server"
-import { ScanOrchestrator } from "@/scanner/pipeline/orchestrator"
-import { createScan, getScans, getScan } from "@/lib/firestore-service"
+import { scanUrl } from "@/scanner/pipeline/orchestrator"
+import { createScan, getScan, getScans } from "@/lib/firestore-service"
+import type { ScanResult } from "@/types/scan"
 
 export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    const { url, modules } = body
+  const body = await request.json()
+  const { url } = body
 
-    if (!url || typeof url !== "string") {
-      return NextResponse.json({ error: "URL is required" }, { status: 400 })
-    }
-
-    try {
-      new URL(url)
-    } catch {
-      return NextResponse.json({ error: "Invalid URL format" }, { status: 400 })
-    }
-
-    const orchestrator = new ScanOrchestrator()
-    const result = await orchestrator.runFullScan({ url, modules })
-
-    await createScan(result)
-
-    return NextResponse.json(result, { status: 200 })
-  } catch (error) {
-    console.error("Scan failed:", error)
-    return NextResponse.json(
-      { error: "Scan failed to complete", details: String(error) },
-      { status: 500 }
-    )
+  if (!url) {
+    return NextResponse.json({ error: "url is required" }, { status: 400 })
   }
+
+  const session = request.cookies.get("__session")?.value
+  let userId: string | undefined
+  if (session) {
+    try { userId = JSON.parse(session).email } catch { /* ignore */ }
+  }
+
+  const result = await scanUrl(url)
+  result.id = crypto.randomUUID()
+  result.createdAt = new Date().toISOString()
+
+  try {
+    await createScan(result, userId)
+  } catch (e) {
+    console.error("Firestore write failed:", e)
+  }
+
+  return NextResponse.json(result)
 }
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
-  const limit = Math.min(Number(searchParams.get("limit")) || 20, 100)
   const id = searchParams.get("id")
+  const limit = parseInt(searchParams.get("limit") || "10")
+
+  const session = request.cookies.get("__session")?.value
+  let userId: string | undefined
+  if (session) {
+    try { userId = JSON.parse(session).email } catch { /* ignore */ }
+  }
 
   if (id) {
     const scan = await getScan(id)
@@ -43,6 +47,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(scan)
   }
 
-  const scans = await getScans(limit)
-  return NextResponse.json(scans)
+  const scans = await getScans(limit, userId)
+  return NextResponse.json({ scans })
 }

@@ -96,7 +96,7 @@ export default function ScanDetailPage() {
         indexing: { score: 78, grade: "B", findings: [], indexedCount: 0, crawlStats: {}, sitemapHealth: { valid: false, urlCount: 0, errors: [], lastModified: "" }, robotsHealth: { valid: false, blockedResources: [], sitemapRefs: [], aiCrawlerRules: 0 }, spaRendering: {} },
         aiReadiness: { score: 61, grade: "C", findings: [], llmFriendly: {}, voiceReadiness: {}, aiCrawlerAnalytics: {}, machineReadability: {} },
         domain: { score: 85, grade: "A", dns: { hasA: false, hasAAAA: false, hasCname: false, hasMx: false, hasTxt: false, hasNs: false, dnssec: false }, email: { spf: false, dkim: false, dmarc: "", bimi: false }, uptime: { statusCode: 0, responseTimeMs: 0, isUp: false }, redirects: { chain: [], loops: false, tooMany: false }, certInfo: { valid: false, issuer: "", daysRemaining: 0 }, findings: [] },
-        accessibility: { score: 72, grade: "B-", findings: [] },
+        accessibility: { score: 72, grade: "B-", findings: [], wcagChecks: [], screenReader: { optimal: false, issuesFound: 0, allImagesLabelled: false, headingStructure: false, ariaLive: false, keyboardNavigable: false }, contrast: { passed: false, failingElements: [], recommendations: [], smallTextRatio: "4.5:1 (target)", largeTextRatio: "3:1 (target)" }, autoAudit: { passed: 0, failed: 0, total: 0 } },
       }
       addScan(mockResult)
     } finally {

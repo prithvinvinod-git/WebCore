@@ -1,13 +1,25 @@
 "use client"
+import { useEffect, useState } from "react"
 import { useScanStore } from "@/store/scan-store"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Pill } from "@/components/ui/pill"
 import Link from "next/link"
-import { History, ChevronRight } from "lucide-react"
+import { History, ChevronRight, TrendingUp, BarChart3 } from "lucide-react"
 
 export default function HistoryPage() {
-  const { scans } = useScanStore()
+  const { scans, setScans } = useScanStore()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch("/api/v1/scans")
+      .then((r) => r.json())
+      .then((data) => {
+        setScans(data.scans || [])
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
+  }, [setScans])
 
   return (
     <div className="max-w-[1200px] mx-auto px-6 py-8">
@@ -16,12 +28,24 @@ export default function HistoryPage() {
           <h1 className="text-[24px] font-semibold text-[#0a0a0a]">Scan History</h1>
           <p className="text-sm text-[#737373] mt-1">{scans.length} total scans</p>
         </div>
-        <Link href="/dashboard/new">
-          <Button size="sm">New Scan</Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/dashboard/history/trends">
+            <Button variant="ghost" size="sm">
+              <TrendingUp size={14} className="mr-1" />
+              Trends
+            </Button>
+          </Link>
+          <Link href="/dashboard/new">
+            <Button size="sm">New Scan</Button>
+          </Link>
+        </div>
       </div>
 
-      {scans.length === 0 ? (
+      {loading ? (
+        <Card>
+          <CardContent className="p-12 text-center text-sm text-[#737373]">Loading scans...</CardContent>
+        </Card>
+      ) : scans.length === 0 ? (
         <Card>
           <CardContent className="p-12 text-center">
             <History size={28} className="mx-auto text-[#d4d4d4] mb-3" />
