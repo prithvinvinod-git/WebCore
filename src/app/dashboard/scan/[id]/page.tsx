@@ -56,12 +56,6 @@ export default function ScanDetailPage() {
 
   const existingScan = scans.find((s) => s.id === scanId)
 
-  useEffect(() => {
-    if (!existingScan && urlParam && !isScanning) {
-      runScan()
-    }
-  }, [])
-
   const runScan = async () => {
     if (!urlParam) return
     setIsScanning(true)
@@ -104,6 +98,12 @@ export default function ScanDetailPage() {
       setScanProgress(100)
     }
   }
+
+  useEffect(() => {
+    if (!existingScan && urlParam && !isScanning) {
+      runScan()
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const scan = existingScan
 

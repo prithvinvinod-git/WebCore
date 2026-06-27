@@ -30,10 +30,6 @@ export default function MonitorPage() {
   const [schedule, setSchedule] = useState<"daily" | "weekly">("weekly")
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchMonitors()
-  }, [])
-
   const fetchMonitors = async () => {
     try {
       const res = await fetch("/api/v1/monitor")
@@ -45,6 +41,8 @@ export default function MonitorPage() {
       setLoading(false)
     }
   }
+
+  useEffect(() => { fetchMonitors() }, []) // eslint-disable-line react-hooks/set-state-in-effect
 
   const addMonitor = async () => {
     if (!newUrl.trim()) return
