@@ -23,5 +23,5 @@ export const useScanStore = create<ScanStore>((set) => ({
   setCurrentScan: (scan) => set({ currentScan: scan }),
   setIsScanning: (val) => set({ isScanning: val }),
   setScanProgress: (val) => set({ scanProgress: val }),
-  addScan: (scan) => set((state) => ({ scans: [scan, ...state.scans] })),
+  addScan: (scan) => set((state) => ({ scans: [scan, ...state.scans.filter((s) => s.id !== scan.id)] })),
 }))
