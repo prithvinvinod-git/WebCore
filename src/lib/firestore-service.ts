@@ -57,7 +57,7 @@ export async function createScan(scan: ScanResult, userId?: string) {
   }
 }
 
-export async function getScans(limit = 20, userId?: string) {
+export async function getScans(limit = 100, userId?: string) {
   let query = scansCol().orderBy("createdAt", "desc").limit(limit) as FirebaseFirestore.Query
   if (userId) {
     query = query.where("userId", "==", userId)

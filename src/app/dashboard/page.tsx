@@ -20,7 +20,7 @@ export default function DashboardPage() {
   const latestScan = scans[0]
 
   useEffect(() => {
-    fetch("/api/v1/scans?limit=5")
+    fetch("/api/v1/scans?limit=1000")
       .then((r) => r.json())
       .then((data) => setScans(data.scans || []))
       .catch(() => {})
@@ -76,28 +76,54 @@ export default function DashboardPage() {
             })}
           </div>
 
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-semibold text-[#0a0a0a]">Latest Scan</h2>
-                <Link href={`/dashboard/scan/${latestScan.id}`}>
-                  <Button variant="ghost" size="sm">
-                    View Details
-                  </Button>
-                </Link>
-              </div>
-            </CardHeader>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-4 text-sm">
-                <span className="text-[#0a0a0a] font-medium">{latestScan.url}</span>
-                <Pill variant={latestScan.overallScore >= 70 ? "success" : latestScan.overallScore >= 50 ? "warning" : "error"}>
-                  Score: {latestScan.overallScore}
-                </Pill>
-                <span className="text-[#737373]">{latestScan.durationMs}ms</span>
-                <span className="text-[#737373]">{new Date(latestScan.createdAt).toLocaleDateString()}</span>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="space-y-4">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-sm font-semibold text-[#0a0a0a]">Latest Scan</h2>
+                  <Link href={`/dashboard/scan/${latestScan.id}`}>
+                    <Button variant="ghost" size="sm">
+                      View Details
+                    </Button>
+                  </Link>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-4 text-sm">
+                  <span className="text-[#0a0a0a] font-medium">{latestScan.url}</span>
+                  <Pill variant={latestScan.overallScore >= 70 ? "success" : latestScan.overallScore >= 50 ? "warning" : "error"}>
+                    Score: {latestScan.overallScore}
+                  </Pill>
+                  <span className="text-[#737373]">{latestScan.durationMs}ms</span>
+                  <span className="text-[#737373]">{new Date(latestScan.createdAt).toLocaleDateString()}</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            {scans.length > 1 && (
+              <Card>
+                <CardHeader>
+                  <h2 className="text-sm font-semibold text-[#0a0a0a]">Recent Scans</h2>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="divide-y">
+                    {scans.slice(1).map((scan) => (
+                      <Link key={scan.id} href={`/dashboard/scan/${scan.id}`}>
+                        <div className="flex items-center gap-4 px-4 py-3 text-sm hover:bg-[#fafafa] transition-colors">
+                          <span className="text-[#0a0a0a] font-medium flex-1 truncate">{scan.url}</span>
+                          <Pill variant={scan.overallScore >= 70 ? "success" : scan.overallScore >= 50 ? "warning" : "error"}>
+                            {scan.overallScore}
+                          </Pill>
+                          <span className="text-[#737373] w-20 text-right">{scan.durationMs}ms</span>
+                          <span className="text-[#737373] w-24 text-right">{new Date(scan.createdAt).toLocaleDateString()}</span>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
         </>
       ) : (
         <Card>
