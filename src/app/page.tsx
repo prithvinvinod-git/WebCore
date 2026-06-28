@@ -24,7 +24,7 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
-        <section className="max-w-[1200px] mx-auto px-6 py-20 sm:py-32 text-center">
+        <section className="max-w-[1200px] mx-auto px-6 py-20 sm:py-32 text-center min-h-screen flex flex-col justify-center">
           <h1 className="text-heading sm:text-heading-lg font-semibold tracking-tight text-[#0a0a0a] max-w-3xl mx-auto leading-[1.1]">
             Your Website&apos;s Complete
             <br />
