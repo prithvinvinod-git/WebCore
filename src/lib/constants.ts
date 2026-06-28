@@ -2,6 +2,7 @@ export const SITE_NAME = "WebCore"
 export const SITE_TAGLINE = "Your Website's Complete Diagnostic Brain — Security, Visibility, Performance, AI Readiness."
 
 export const NAV_LINKS = [
+  { label: "Home", href: "/" },
   { label: "Dashboard", href: "/dashboard" },
   { label: "Scans", href: "/dashboard/history" },
   { label: "Monitor", href: "/dashboard/monitor" },

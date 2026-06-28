@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Shield } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
+import { getAuth } from "firebase/auth"
 
 function LoginForm() {
   const router = useRouter()
@@ -22,7 +23,8 @@ function LoginForm() {
     setLoading(true)
     try {
       await signIn(email, password)
-      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ email }) })
+      const uid = getAuth().currentUser?.uid || email
+      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ uid, email }) })
       router.push(redirect)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to sign in")
@@ -34,7 +36,8 @@ function LoginForm() {
   const handleGoogle = async () => {
     try {
       await signInWithGoogle()
-      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ provider: "google" }) })
+      const u = getAuth().currentUser
+      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ uid: u?.uid, email: u?.email, provider: "google", name: u?.displayName || "" }) })
       router.push(redirect)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Google sign-in failed")
@@ -44,7 +47,8 @@ function LoginForm() {
   const handleGithub = async () => {
     try {
       await signInWithGithub()
-      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ provider: "github" }) })
+      const u = getAuth().currentUser
+      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ uid: u?.uid, email: u?.email, provider: "github", name: u?.displayName || "" }) })
       router.push(redirect)
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "GitHub sign-in failed")

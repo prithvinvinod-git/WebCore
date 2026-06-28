@@ -26,7 +26,7 @@ export function Nav() {
   return (
     <nav className="border-b border-[#e5e5e5] bg-white">
       <div className="max-w-[1200px] mx-auto px-6 h-14 flex items-center justify-between">
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <Shield size={22} className="text-[#0a0a0a]" />
           <span className="font-inter text-base font-semibold text-[#0a0a0a]">{SITE_NAME}</span>
         </Link>

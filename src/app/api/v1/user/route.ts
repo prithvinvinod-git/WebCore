@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import { getUser, createUser, updateUser } from "@/lib/firestore-service"
+import { createUser, updateUser } from "@/lib/firestore-service"
+import { getSession } from "@/lib/session"
 
-export async function GET(request: NextRequest) {
-  const session = request.cookies.get("__session")?.value
+export async function GET() {
+  const session = await getSession()
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  const { email } = JSON.parse(session)
-  return NextResponse.json({ id: email, email })
+  return NextResponse.json({ id: session.uid, email: session.email })
 }
 
 export async function POST(request: NextRequest) {
@@ -17,10 +17,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-  const session = request.cookies.get("__session")?.value
+  const session = await getSession()
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  const { email } = JSON.parse(session)
   const body = await request.json()
-  await updateUser(email, body)
+  await updateUser(session.uid, body)
   return NextResponse.json({ success: true })
 }

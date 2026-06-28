@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { scanUrl } from "@/scanner/pipeline/orchestrator"
 import { createScan, getScan, getScans } from "@/lib/firestore-service"
-import type { ScanResult } from "@/types/scan"
+import { getUserId } from "@/lib/session"
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
@@ -11,11 +11,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "url is required" }, { status: 400 })
   }
 
-  const session = request.cookies.get("__session")?.value
-  let userId: string | undefined
-  if (session) {
-    try { userId = JSON.parse(session).email } catch { /* ignore */ }
-  }
+  const userId = await getUserId()
 
   const result = await scanUrl(url)
   result.id = crypto.randomUUID()
@@ -33,13 +29,9 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get("id")
-  const limit = parseInt(searchParams.get("limit") || "10")
+  const limit = parseInt(searchParams.get("limit") || "100")
 
-  const session = request.cookies.get("__session")?.value
-  let userId: string | undefined
-  if (session) {
-    try { userId = JSON.parse(session).email } catch { /* ignore */ }
-  }
+  const userId = await getUserId()
 
   if (id) {
     const scan = await getScan(id)

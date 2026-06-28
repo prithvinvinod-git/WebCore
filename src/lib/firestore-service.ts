@@ -27,34 +27,11 @@ export async function updateUser(uid: string, data: Record<string, unknown>) {
 }
 
 export async function createScan(scan: ScanResult, userId?: string) {
-  const { security, seo, aeo, performance, indexing, aiReadiness, domain, accessibility, ...scanData } = scan
-
   await scansCol().doc(scan.id).set({
-    ...scanData,
+    ...scan,
     userId: userId || null,
     createdAt: new Date(scan.createdAt),
   })
-
-  const moduleFindings = [
-    ...(security?.findings ?? []).map((f) => ({ ...f, module: "security" })),
-    ...(seo?.findings ?? []).map((f) => ({ ...f, module: "seo" })),
-    ...(aeo?.findings ?? []).map((f) => ({ ...f, module: "aeo" })),
-    ...(performance?.findings ?? []).map((f) => ({ ...f, module: "performance" })),
-    ...(indexing?.findings ?? []).map((f) => ({ ...f, module: "indexing" })),
-    ...(aiReadiness?.findings ?? []).map((f) => ({ ...f, module: "aiReadiness" })),
-    ...(domain?.findings ?? []).map((f) => ({ ...f, module: "domain" })),
-    ...(accessibility?.findings ?? []).map((f) => ({ ...f, module: "accessibility" })),
-  ]
-
-  if (moduleFindings.length > 0) {
-    const batch = db.batch()
-    for (const finding of moduleFindings) {
-      const docId = `${scan.id}_${finding.id}`
-      const ref = findingsCol().doc(docId)
-      batch.set(ref, { ...finding, scanId: scan.id })
-    }
-    await batch.commit()
-  }
 }
 
 export async function getScans(limit = 100, userId?: string) {

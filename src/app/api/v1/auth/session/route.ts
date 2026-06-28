@@ -3,7 +3,13 @@ import { NextRequest, NextResponse } from "next/server"
 export async function POST(request: NextRequest) {
   const body = await request.json()
   const response = NextResponse.json({ success: true })
-  response.cookies.set("__session", JSON.stringify({ email: body.email, provider: body.provider || "email", name: body.name || "" }), {
+  const session = {
+    uid: body.uid || body.email,
+    email: body.email,
+    provider: body.provider || "email",
+    name: body.name || "",
+  }
+  response.cookies.set("__session", JSON.stringify(session), {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",

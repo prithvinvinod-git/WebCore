@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getMonitors, createMonitor, deleteMonitor, updateMonitor } from "@/lib/firestore-service"
 import type { MonitorConfig } from "@/types/scan"
+import { getUserId } from "@/lib/session"
 
-export async function GET(request: NextRequest) {
-  const session = request.cookies.get("__session")?.value
-  let userId: string | undefined
-  if (session) {
-    try { userId = JSON.parse(session).email } catch { /* ignore */ }
-  }
+export async function GET() {
+  const userId = await getUserId()
   const monitors = await getMonitors(userId)
   return NextResponse.json({ monitors })
 }
@@ -20,11 +17,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "scanId is required" }, { status: 400 })
   }
 
-  const session = request.cookies.get("__session")?.value
-  let userId: string | undefined
-  if (session) {
-    try { userId = JSON.parse(session).email } catch { /* ignore */ }
-  }
+  const userId = await getUserId()
 
   const config: MonitorConfig & { scanId: string; userId?: string } = {
     scanId,

@@ -1,0 +1,35 @@
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: splash-slide-up 0.8s cubic-bezier(0.65, 0, 0.35, 1) 2s forwards;
+}
+
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.splash-title {
+  font-family: "Nasalization", sans-serif;
+  font-size: 64px;
+  color: #8A2BE2;
+  animation: splash-fade-in 0.6s ease-out 0.1s both;
+}
+
+@keyframes splash-slide-up {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
+@keyframes splash-fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}

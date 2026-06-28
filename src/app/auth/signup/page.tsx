@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Shield } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
+import { getAuth } from "firebase/auth"
 
 export default function SignupPage() {
   const router = useRouter()
@@ -21,7 +22,8 @@ export default function SignupPage() {
     setLoading(true)
     try {
       await signUp(email, password)
-      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ email, name }) })
+      const uid = getAuth().currentUser?.uid || email
+      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ uid, email, name }) })
       router.push("/dashboard")
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Failed to create account")
@@ -33,7 +35,8 @@ export default function SignupPage() {
   const handleGoogle = async () => {
     try {
       await signInWithGoogle()
-      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ provider: "google" }) })
+      const u = getAuth().currentUser
+      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ uid: u?.uid, email: u?.email, provider: "google", name: u?.displayName || "" }) })
       router.push("/dashboard")
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Google sign-up failed")
@@ -43,7 +46,8 @@ export default function SignupPage() {
   const handleGithub = async () => {
     try {
       await signInWithGithub()
-      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ provider: "github" }) })
+      const u = getAuth().currentUser
+      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ uid: u?.uid, email: u?.email, provider: "github", name: u?.displayName || "" }) })
       router.push("/dashboard")
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "GitHub sign-up failed")

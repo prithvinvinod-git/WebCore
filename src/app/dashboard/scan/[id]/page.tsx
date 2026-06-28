@@ -1,8 +1,7 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useParams, useSearchParams } from "next/navigation"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Pill } from "@/components/ui/pill"
 import { Tabs } from "@/components/ui/tabs"
 import { FindingItem } from "@/components/ui/finding-item"
 import { ScoreCard } from "@/components/ui/score-card"
@@ -50,64 +49,72 @@ export default function ScanDetailPage() {
   const searchParams = useSearchParams()
   const { scans, addScan, setIsScanning, isScanning, setScanProgress, scanProgress } = useScanStore()
   const [activeTab, setActiveTab] = useState("overview")
+  const [notFound, setNotFound] = useState(false)
 
   const scanId = params.id as string
   const urlParam = searchParams.get("url")
 
-  const existingScan = scans.find((s) => s.id === scanId)
+  const scan = scans.find((s) => s.id === scanId)
 
-  const runScan = async () => {
-    if (!urlParam) return
-    setIsScanning(true)
-    setScanProgress(0)
+  const fetchedRef = useRef(false)
 
-    try {
-      const res = await fetch("/api/v1/scan", {
+  useEffect(() => {
+    if (scan || fetchedRef.current) return
+    fetchedRef.current = true
+
+    if (urlParam) {
+      setIsScanning(true)
+      setScanProgress(0)
+
+      fetch("/api/v1/scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: urlParam }),
       })
-
-      if (!res.ok) throw new Error("Scan failed")
-
-      const result: ScanResult = await res.json()
-      result.id = scanId
-      addScan(result)
-    } catch (err) {
-      console.error("Scan error:", err)
-      const mockResult: ScanResult = {
-        id: scanId,
-        url: urlParam,
-        status: "complete",
-        createdAt: new Date().toISOString(),
-        durationMs: 2340,
-        overallScore: 71,
-        overallGrade: "B",
-        security: { score: 68, grade: "C+", findings: [], headers: {}, tlsConfig: { valid: true, daysRemaining: 87, protocol: "TLS 1.3", cipherStrength: "AES-256-GCM", hsts: true }, cves: [], secrets: [], baasFindings: [] },
-        seo: { score: 82, grade: "A-", findings: [], indexability: {}, onPage: {}, technical: {}, structuredData: { types: [], validCount: 0, invalidCount: 0 }, cwvData: { lcp: 0, inp: 0, cls: 0, fcp: 0, ttfb: 0 } },
-        aeo: { score: 65, grade: "C+", findings: [], crawlerAccess: [], extractability: {}, structuredDataDepth: {}, trustSignals: { citedBy: 0, contentFreshness: "", authorEeats: 0 }, engineMatrix: {} },
-        performance: { score: 73, grade: "B-", lighthouse: { mobile: {}, desktop: {} }, findings: [] },
-        indexing: { score: 78, grade: "B", findings: [], indexedCount: 0, crawlStats: {}, sitemapHealth: { valid: false, urlCount: 0, errors: [], lastModified: "" }, robotsHealth: { valid: false, blockedResources: [], sitemapRefs: [], aiCrawlerRules: 0 }, spaRendering: {} },
-        aiReadiness: { score: 61, grade: "C", findings: [], llmFriendly: {}, voiceReadiness: {}, aiCrawlerAnalytics: {}, machineReadability: {} },
-        domain: { score: 85, grade: "A", dns: { hasA: false, hasAAAA: false, hasCname: false, hasMx: false, hasTxt: false, hasNs: false, dnssec: false }, email: { spf: false, dkim: false, dmarc: "", bimi: false }, uptime: { statusCode: 0, responseTimeMs: 0, isUp: false }, redirects: { chain: [], loops: false, tooMany: false }, certInfo: { valid: false, issuer: "", daysRemaining: 0 }, findings: [] },
-        accessibility: { score: 72, grade: "B-", findings: [], wcagChecks: [], screenReader: { optimal: false, issuesFound: 0, allImagesLabelled: false, headingStructure: false, ariaLive: false, keyboardNavigable: false }, contrast: { passed: false, failingElements: [], recommendations: [], smallTextRatio: "4.5:1 (target)", largeTextRatio: "3:1 (target)" }, autoAudit: { passed: 0, failed: 0, total: 0 } },
-      }
-      addScan(mockResult)
-    } finally {
-      setIsScanning(false)
-      setScanProgress(100)
+        .then((r) => {
+          if (!r.ok) throw new Error("Scan failed")
+          return r.json()
+        })
+        .then((s: ScanResult) => {
+          s.id = scanId
+          addScan(s)
+        })
+        .catch(() => setNotFound(true))
+        .finally(() => {
+          setIsScanning(false)
+          setScanProgress(100)
+        })
+    } else {
+      fetch(`/api/v1/scan?id=${scanId}`)
+        .then((r) => {
+          if (!r.ok) throw new Error("Not found")
+          return r.json()
+        })
+        .then((s: ScanResult) => addScan(s))
+        .catch(() => setNotFound(true))
     }
-  }
-
-  useEffect(() => {
-    if (!existingScan && urlParam && !isScanning) {
-      runScan()
-    }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  const scan = existingScan
+  }, [scanId, urlParam, scan, addScan, setIsScanning, setScanProgress])
 
   if (!scan) {
+    if (notFound) {
+      return (
+        <div className="max-w-[900px] mx-auto px-6 py-12">
+          <Card>
+            <CardContent className="p-12 text-center">
+              <Shield size={32} className="mx-auto text-[#d4d4d4] mb-4" />
+              <h2 className="text-base font-semibold text-[#0a0a0a] mb-1">Scan not found</h2>
+              <p className="text-sm text-[#737373] mb-6">
+                This scan could not be loaded. It may have been deleted or failed to save.
+              </p>
+              <Link href="/dashboard">
+                <Button>Back to Dashboard</Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
+      )
+    }
+
     return (
       <div className="max-w-[900px] mx-auto px-6 py-12">
         <Card>

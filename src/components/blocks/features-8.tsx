@@ -1,103 +1,186 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Shield, Search, Globe, BarChart3, Gauge, Eye } from "lucide-react"
+import { Card, CardContent } from '@/components/ui/card'
+import { Gauge, BarChart3 } from 'lucide-react'
+
+const cardAnimation = "opacity-0 animate-fade-in-up"
+
+const delays = [
+  "animation-delay-[0ms]",
+  "animation-delay-[100ms]",
+  "animation-delay-[200ms]",
+  "animation-delay-[300ms]",
+  "animation-delay-[400ms]",
+]
+
+function BarChart() {
+  return (
+    <svg viewBox="0 0 200 100" className="w-full h-full" fill="none">
+      <rect x="10" y="55" width="22" height="40" rx="3" className="fill-[#ea580c] opacity-80" style={{ animation: "bar-rise 0.8s ease-out 0.1s forwards", transformOrigin: "bottom", transform: "scaleY(0)" }} />
+      <rect x="38" y="40" width="22" height="55" rx="3" className="fill-[#ea580c]" style={{ animation: "bar-rise 0.8s ease-out 0.2s forwards", transformOrigin: "bottom", transform: "scaleY(0)" }} />
+      <rect x="66" y="30" width="22" height="65" rx="3" className="fill-[#16a34a] opacity-80" style={{ animation: "bar-rise 0.8s ease-out 0.3s forwards", transformOrigin: "bottom", transform: "scaleY(0)" }} />
+      <rect x="94" y="20" width="22" height="75" rx="3" className="fill-[#16a34a]" style={{ animation: "bar-rise 0.8s ease-out 0.4s forwards", transformOrigin: "bottom", transform: "scaleY(0)" }} />
+      <rect x="122" y="35" width="22" height="60" rx="3" className="fill-[#3b82f6] opacity-80" style={{ animation: "bar-rise 0.8s ease-out 0.5s forwards", transformOrigin: "bottom", transform: "scaleY(0)" }} />
+      <rect x="150" y="15" width="22" height="80" rx="3" className="fill-[#3b82f6]" style={{ animation: "bar-rise 0.8s ease-out 0.6s forwards", transformOrigin: "bottom", transform: "scaleY(0)" }} />
+    </svg>
+  )
+}
+
+function LineChart() {
+  const points = "0,80 30,65 60,70 90,40 120,45 150,20 180,25"
+  return (
+    <svg viewBox="0 0 200 100" className="w-full h-full" fill="none">
+      <defs>
+        <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#16a34a" stopOpacity="0.25" />
+          <stop offset="100%" stopColor="#16a34a" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d={`M${points} L180,95 L0,95 Z`} fill="url(#lineGrad)" />
+      <path d={`M${points}`} stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="animate-draw-line" strokeDasharray="400" strokeDashoffset="400" />
+      {["0,80", "30,65", "60,70", "90,40", "120,45", "150,20"].map((p, i) => (
+        <circle key={i} cx={+p.split(",")[0]} cy={+p.split(",")[1]} r="3" fill="#16a34a" className="opacity-0 animate-fade-in" style={{ animationDelay: `${1 + i * 0.1}s` }} />
+      ))}
+      <circle cx="180" cy="25" r="4" fill="#16a34a" stroke="#fff" strokeWidth="2" className="opacity-0 animate-fade-in" style={{ animationDelay: "1.6s" }} />
+    </svg>
+  )
+}
+
+function RadarChart() {
+  return (
+    <svg viewBox="0 0 120 120" className="w-full h-full" fill="none">
+      {[3, 2, 1].map((n) => {
+        const r = n * 18
+        const pts = Array.from({ length: 6 }, (_, i) => {
+          const a = (Math.PI * 2 * i) / 6 - Math.PI / 2
+          return `${60 + Math.cos(a) * r},${60 + Math.sin(a) * r}`
+        }).join(" ")
+        return <polygon key={n} points={pts} stroke="#e5e5e5" strokeWidth="1" fill="none" />
+      })}
+      {[0, 1, 2, 3, 4, 5].map((i) => {
+        const a = (Math.PI * 2 * i) / 6 - Math.PI / 2
+        return <line key={i} x1="60" y1="60" x2={60 + Math.cos(a) * 54} y2={60 + Math.sin(a) * 54} stroke="#e5e5e5" strokeWidth="1" />
+      })}
+      <polygon
+        points="60,12 102,40 102,80 60,108 18,80 18,40"
+        fill="#3b82f6"
+        fillOpacity="0.15"
+        stroke="#3b82f6"
+        strokeWidth="2"
+        className="animate-fade-in"
+        style={{ animationDelay: "0.3s" }}
+      />
+      <polygon
+        points="60,24 90,42 85,75 60,90 35,75 30,42"
+        fill="#ea580c"
+        fillOpacity="0.12"
+        stroke="#ea580c"
+        strokeWidth="2"
+        className="animate-fade-in"
+        style={{ animationDelay: "0.6s" }}
+      />
+    </svg>
+  )
+}
+
+function AreaChart() {
+  return (
+    <svg viewBox="0 0 200 100" className="w-full h-full" fill="none">
+      <defs>
+        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ea580c" stopOpacity="0.2" />
+          <stop offset="100%" stopColor="#ea580c" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d="M0,85 Q25,78 50,75 T100,60 T150,35 T200,30 L200,98 L0,98 Z" fill="url(#areaGrad)" />
+      <path d="M0,85 Q25,78 50,75 T100,60 T150,35 T200,30" stroke="#ea580c" strokeWidth="2.5" strokeLinecap="round" className="animate-draw-line" strokeDasharray="500" strokeDashoffset="500" />
+      <path d="M0,60 Q25,55 50,50 T100,40 T150,25 T200,15" stroke="#3b82f6" strokeWidth="2" strokeLinecap="round" opacity="0.6" className="animate-draw-line" strokeDasharray="500" strokeDashoffset="500" style={{ animationDelay: "0.5s" }} />
+      <path d="M0,75 Q25,70 50,65 T100,55 T150,40 T200,35" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" opacity="0.5" className="animate-draw-line" strokeDasharray="500" strokeDashoffset="500" style={{ animationDelay: "1s" }} />
+    </svg>
+  )
+}
 
 export function Features() {
   return (
-    <section className="bg-gray-50 py-16 md:py-32 dark:bg-transparent">
+    <section className="py-16 md:py-32">
       <div className="mx-auto max-w-3xl lg:max-w-5xl px-6">
         <div className="relative">
           <div className="relative z-10 grid grid-cols-6 gap-3">
-            <Card className="relative col-span-full flex overflow-hidden lg:col-span-2">
-              <CardContent className="relative m-auto size-fit pt-6">
-                <div className="relative flex h-24 w-56 items-center">
-                  <svg className="text-muted absolute inset-0 size-full" viewBox="0 0 254 104" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M112.891 97.7022C140.366 97.0802 171.004 94.6715 201.087 87.5116C210.43 85.2881 219.615 82.6412 228.284 78.2473C232.198 76.3179 235.905 73.9942 239.348 71.3124C241.85 69.2557 243.954 66.7571 245.555 63.9408C249.34 57.3235 248.281 50.5341 242.498 45.6109C239.033 42.7237 235.228 40.2703 231.169 38.3054C219.443 32.7209 207.141 28.4382 194.482 25.534C184.013 23.1927 173.358 21.7755 162.64 21.2989C161.376 21.3512 160.113 21.181 158.908 20.796C158.034 20.399 156.857 19.1682 156.962 18.4535C157.115 17.8927 157.381 17.3689 157.743 16.9139C158.104 16.4588 158.555 16.0821 159.067 15.8066C160.14 15.4683 161.274 15.3733 162.389 15.5286C179.805 15.3566 196.626 18.8373 212.998 24.462C220.978 27.2494 228.798 30.4747 236.423 34.1232C240.476 36.1159 244.202 38.7131 247.474 41.8258C254.342 48.2578 255.745 56.9397 251.841 65.4892C249.793 69.8582 246.736 73.6777 242.921 76.6327C236.224 82.0192 228.522 85.4602 220.502 88.2924C205.017 93.7847 188.964 96.9081 172.738 99.2109C153.442 101.949 133.993 103.478 114.506 103.79C91.1468 104.161 67.9334 102.97 45.1169 97.5831C36.0094 95.5616 27.2626 92.1655 19.1771 87.5116C13.839 84.5746 9.1557 80.5802 5.41318 75.7725C-0.54238 67.7259 -1.13794 59.1763 3.25594 50.2827C5.82447 45.3918 9.29572 41.0315 13.4863 37.4319C24.2989 27.5721 37.0438 20.9681 50.5431 15.7272C68.1451 8.8849 86.4883 5.1395 105.175 2.83669C129.045 0.0992292 153.151 0.134761 177.013 2.94256C197.672 5.23215 218.04 9.01724 237.588 16.3889C240.089 17.3418 242.498 18.5197 244.933 19.6446C246.627 20.4387 247.725 21.6695 246.997 23.615C246.455 25.1105 244.814 25.5605 242.63 24.5811C230.322 18.9961 217.233 16.1904 204.117 13.4376C188.761 10.3438 173.2 8.36665 157.558 7.52174C129.914 5.70776 102.154 8.06792 75.2124 14.5228C60.6177 17.8788 46.5758 23.2977 33.5102 30.6161C26.6595 34.3329 20.4123 39.0673 14.9818 44.658C12.9433 46.8071 11.1336 49.1622 9.58207 51.6855C4.87056 59.5336 5.61172 67.2494 11.9246 73.7608C15.2064 77.0494 18.8775 79.925 22.8564 82.3236C31.6176 87.7101 41.3848 90.5291 51.3902 92.5804C70.6068 96.5773 90.0219 97.7419 112.891 97.7022Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  <span className="mx-auto block w-fit text-5xl font-semibold">150+</span>
+            <Card className={`relative col-span-full flex overflow-hidden lg:col-span-2 ${cardAnimation} ${delays[0]}`}>
+              <CardContent className="relative m-auto size-fit pt-6 w-full">
+                <div className="relative h-28 w-full px-4">
+                  <BarChart />
                 </div>
-                <h2 className="mt-6 text-center text-3xl font-semibold">Security Checks</h2>
+                <h2 className="mt-4 text-center text-xl font-semibold text-[#0a0a0a]">150+ Security Checks</h2>
+                <p className="mt-1 text-center text-sm text-[#7a7676] px-2 pb-4">
+                  CVE scanning, TLS config, secret leak detection, and more
+                </p>
               </CardContent>
             </Card>
-            <Card className="relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-2">
+
+            <Card className={`relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-2 ${cardAnimation} ${delays[1]}`}>
               <CardContent className="pt-6">
-                <div className="relative mx-auto flex aspect-square size-32 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
-                  <Shield className="m-auto size-12" strokeWidth={1} />
+                <div className="relative mx-auto size-32">
+                  <RadarChart />
                 </div>
-                <div className="relative z-10 mt-6 space-y-2 text-center">
-                  <h2 className="group-hover:text-secondary-950 text-lg font-medium transition dark:text-white">Security Audit</h2>
-                  <p className="text-foreground">150+ security checks, TLS config, CVE scanning, secret leak detection</p>
+                <div className="relative z-10 mt-4 space-y-2 text-center px-2 pb-4">
+                  <h2 className="text-lg font-medium text-[#0a0a0a]">Domain Health</h2>
+                  <p className="text-sm text-[#7a7676]">DNS records, email security, SSL certs, redirect chains</p>
                 </div>
               </CardContent>
             </Card>
-            <Card className="relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-2">
+
+            <Card className={`relative col-span-full overflow-hidden sm:col-span-3 lg:col-span-2 ${cardAnimation} ${delays[2]}`}>
               <CardContent className="pt-6">
-                <div className="pt-6 lg:px-6">
-                  <div className="flex items-center justify-center gap-4">
-                    <Search className="size-16" strokeWidth={1} />
-                    <Globe className="size-16" strokeWidth={1} />
-                  </div>
+                <div className="pt-2 px-2 h-28">
+                  <LineChart />
                 </div>
-                <div className="relative z-10 mt-14 space-y-2 text-center">
-                  <h2 className="text-lg font-medium transition">SEO &amp; AEO</h2>
-                  <p className="text-foreground">80+ SEO checks, 60+ AEO checks, AI crawler analysis, structured data</p>
+                <div className="relative z-10 mt-6 space-y-2 text-center px-2 pb-4">
+                  <h2 className="text-lg font-medium text-[#0a0a0a]">SEO &amp; AEO</h2>
+                  <p className="text-sm text-[#7a7676]">80+ SEO checks, 60+ AEO checks, AI crawler analysis</p>
                 </div>
               </CardContent>
             </Card>
-            <Card className="relative col-span-full overflow-hidden lg:col-span-3">
-              <CardContent className="grid pt-6 sm:grid-cols-2">
-                <div className="relative z-10 flex flex-col justify-between space-y-12 lg:space-y-6">
-                  <div className="relative flex aspect-square size-12 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
-                    <Globe className="m-auto size-5" strokeWidth={1} />
+
+            <Card className={`relative col-span-full overflow-hidden lg:col-span-3 ${cardAnimation} ${delays[3]}`}>
+              <CardContent className="grid pt-6 sm:grid-cols-2 gap-4">
+                <div className="relative z-10 flex flex-col justify-between">
+                  <div className="relative flex size-10 rounded-full border border-[#e5e5e5] items-center justify-center">
+                    <Gauge size={18} className="text-[#ea580c]" strokeWidth={1.5} />
                   </div>
-                  <div className="space-y-2">
-                    <h2 className="group-hover:text-secondary-950 text-lg font-medium text-zinc-800 transition dark:text-white">Domain Health</h2>
-                    <p className="text-foreground">DNS, email security, SSL certs, uptime monitoring, redirect chains</p>
+                  <div className="space-y-2 mt-4">
+                    <h2 className="text-lg font-medium text-[#0a0a0a]">Performance Metrics</h2>
+                    <p className="text-sm text-[#7a7676]">Core Web Vitals, load time breakdown, optimization scores</p>
                   </div>
                 </div>
-                <div className="rounded-tl-(--radius) relative -mb-6 -mr-6 mt-6 h-fit border-l border-t p-6 py-6 sm:ml-6">
-                  <div className="absolute left-3 top-2 flex gap-1">
-                    <span className="block size-2 rounded-full border dark:border-white/10 dark:bg-white/10"></span>
-                    <span className="block size-2 rounded-full border dark:border-white/10 dark:bg-white/10"></span>
-                    <span className="block size-2 rounded-full border dark:border-white/10 dark:bg-white/10"></span>
-                  </div>
-                  <div className="flex flex-col gap-3 pt-4">
-                    <div className="flex items-center gap-2 text-sm"><span className="size-2 rounded-full bg-green-500" /> DNS Records</div>
-                    <div className="flex items-center gap-2 text-sm"><span className="size-2 rounded-full bg-blue-500" /> Email Security</div>
-                    <div className="flex items-center gap-2 text-sm"><span className="size-2 rounded-full bg-orange-500" /> SSL Certificates</div>
-                    <div className="flex items-center gap-2 text-sm"><span className="size-2 rounded-full bg-purple-500" /> Uptime Monitoring</div>
-                  </div>
+                <div className="relative h-32 sm:h-full min-h-[100px]">
+                  <AreaChart />
                 </div>
               </CardContent>
             </Card>
-            <Card className="relative col-span-full overflow-hidden lg:col-span-3">
-              <CardContent className="grid h-full pt-6 sm:grid-cols-2">
-                <div className="relative z-10 flex flex-col justify-between space-y-12 lg:space-y-6">
-                  <div className="relative flex aspect-square size-12 rounded-full border before:absolute before:-inset-2 before:rounded-full before:border dark:border-white/10 dark:before:border-white/5">
-                    <BarChart3 className="m-auto size-6" strokeWidth={1} />
+
+            <Card className={`relative col-span-full overflow-hidden lg:col-span-3 ${cardAnimation} ${delays[4]}`}>
+              <CardContent className="grid h-full pt-6 sm:grid-cols-2 gap-4">
+                <div className="relative z-10 flex flex-col justify-between">
+                  <div className="relative flex size-10 rounded-full border border-[#e5e5e5] items-center justify-center">
+                    <BarChart3 size={18} className="text-[#7c3aed]" strokeWidth={1.5} />
                   </div>
-                  <div className="space-y-2">
-                    <h2 className="text-lg font-medium transition">AI Readiness</h2>
-                    <p className="text-foreground">LLM-friendliness, voice search readiness, machine readability scoring</p>
+                  <div className="space-y-2 mt-4">
+                    <h2 className="text-lg font-medium text-[#0a0a0a]">AI Readiness</h2>
+                    <p className="text-sm text-[#7a7676]">LLM-friendliness, voice search, machine readability</p>
                   </div>
                 </div>
-                <div className="before:bg-(--color-border) relative mt-6 before:absolute before:inset-0 before:mx-auto before:w-px sm:-my-6 sm:-mr-6">
-                  <div className="relative flex h-full flex-col justify-center space-y-6 py-6">
-                    <div className="relative flex w-[calc(50%+0.875rem)] items-center justify-end gap-2">
-                      <span className="block h-fit rounded border px-2 py-1 text-xs shadow-sm">LLM Friendly</span>
-                      <div className="size-7 rounded-full bg-green-100 flex items-center justify-center text-xs font-medium">98%</div>
+                <div className="relative flex flex-col justify-center space-y-3 py-4">
+                  {[
+                    { label: "LLM Friendly", value: "98%", color: "bg-[#16a34a]" },
+                    { label: "Voice Ready", value: "92%", color: "bg-[#3b82f6]" },
+                    { label: "Machine Readable", value: "95%", color: "bg-[#7c3aed]" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3 justify-end">
+                      <span className="text-xs text-[#7a7676] font-medium">{item.label}</span>
+                      <div className={`size-7 rounded-full ${item.color} flex items-center justify-center text-[10px] font-bold text-white`}>
+                        {item.value}
+                      </div>
                     </div>
-                    <div className="relative ml-[calc(50%-1rem)] flex items-center gap-2">
-                      <div className="size-8 rounded-full bg-blue-100 flex items-center justify-center text-xs font-medium">92%</div>
-                      <span className="block h-fit rounded border px-2 py-1 text-xs shadow-sm">Voice Ready</span>
-                    </div>
-                    <div className="relative flex w-[calc(50%+0.875rem)] items-center justify-end gap-2">
-                      <span className="block h-fit rounded border px-2 py-1 text-xs shadow-sm">Machine Readable</span>
-                      <div className="size-7 rounded-full bg-purple-100 flex items-center justify-center text-xs font-medium">95%</div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
