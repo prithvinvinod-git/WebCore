@@ -7,21 +7,26 @@ import { Shield, LogOut, Settings } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
 import { useState } from "react"
 
-export function Nav() {
+export function Nav({ serverSession }: { serverSession?: { uid: string; email?: string; name?: string } | null }) {
   const pathname = usePathname()
   const router = useRouter()
-  const { user, signOut } = useAuth()
+  const { user, loading, signOut } = useAuth()
   const [open, setOpen] = useState(false)
+
+  const isLoggedIn = !!user || (loading && !!serverSession)
+
+  const displayName = user?.displayName || serverSession?.name || ""
+  const email = user?.email || serverSession?.email || ""
+
+  const initials = displayName
+    ? displayName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+    : email.slice(0, 2).toUpperCase() || "JD"
 
   const handleSignOut = async () => {
     await signOut()
     await fetch("/api/v1/auth/session", { method: "DELETE" })
     router.push("/")
   }
-
-  const initials = user?.displayName
-    ? user.displayName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
-    : user?.email?.slice(0, 2).toUpperCase() || "JD"
 
   return (
     <nav className="border-b border-[#e5e5e5] bg-white">
@@ -49,7 +54,7 @@ export function Nav() {
         </div>
 
         <div className="flex items-center gap-3">
-          {user ? (
+          {isLoggedIn ? (
             <div className="relative">
               <button
                 onClick={() => setOpen(!open)}
@@ -60,8 +65,8 @@ export function Nav() {
               {open && (
                 <div className="absolute right-0 top-9 w-48 bg-white border border-[#e5e5e5] rounded-xl shadow-lg p-1 z-50">
                   <div className="px-3 py-2 border-b border-[#e5e5e5]">
-                    <p className="text-xs font-medium text-[#0a0a0a] truncate">{user.displayName || user.email}</p>
-                    <p className="text-[10px] text-[#737373] truncate">{user.email}</p>
+                    <p className="text-xs font-medium text-[#0a0a0a] truncate">{displayName || email}</p>
+                    <p className="text-[10px] text-[#737373] truncate">{email}</p>
                   </div>
                   <Link href="/dashboard/settings" className="flex items-center gap-2 px-3 py-1.5 text-xs text-[#525252] hover:bg-[#f5f5f5] rounded-lg">
                     <Settings size={12} />
