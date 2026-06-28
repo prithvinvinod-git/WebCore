@@ -1,33 +1,7 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Shield, Globe, Search, BarChart3, BookOpen, CreditCard } from "lucide-react"
-
-const features = [
-  {
-    icon: Shield,
-    label: "Security Audit",
-    desc: "150+ security checks, TLS config, CVE scanning, secret leak detection",
-    accent: "text-[#ea580c]",
-  },
-  {
-    icon: Search,
-    label: "SEO & AEO",
-    desc: "80+ SEO checks, 60+ AEO checks, AI crawler analysis, structured data",
-    accent: "text-[#16a34a]",
-  },
-  {
-    icon: Globe,
-    label: "Domain Health",
-    desc: "DNS, email security, SSL certs, uptime monitoring, redirect chains",
-    accent: "text-[#7c3aed]",
-  },
-  {
-    icon: BarChart3,
-    label: "AI Readiness",
-    desc: "LLM-friendliness, voice search readiness, machine readability scoring",
-    accent: "text-[#3b82f6]",
-  },
-]
+import { Shield } from "lucide-react"
+import { Features } from "@/components/blocks/features-8"
 
 export default function Home() {
   return (
@@ -72,24 +46,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="max-w-[1200px] mx-auto px-6 pb-20">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {features.map((f) => (
-              <div
-                key={f.label}
-                className="rounded-xl border border-[#e5e5e5] bg-white p-5"
-              >
-                <f.icon size={20} className={f.accent} />
-                <h3 className="text-sm font-semibold text-[#0a0a0a] mt-3">
-                  {f.label}
-                </h3>
-                <p className="text-xs text-[#737373] mt-1 leading-relaxed">
-                  {f.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
+        <Features />
       </main>
 
       <footer className="border-t border-[#e5e5e5]">
