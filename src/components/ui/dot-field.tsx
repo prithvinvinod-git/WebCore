@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, memo } from "react"
+import { useEffect, useRef, useId, memo } from "react"
 import "./DotField.css"
 
 const TWO_PI = Math.PI * 2
@@ -65,9 +65,8 @@ const DotField = memo(
       gradientTo,
     }
     const rebuildRef = useRef<(() => void) | null>(null)
-    const glowIdRef = useRef(
-      `dot-field-glow-${Math.random().toString(36).slice(2, 9)}`
-    )
+    const id = useId()
+    const glowId = `dot-field-glow-${id}`
 
     useEffect(() => {
       const canvas = canvasRef.current
@@ -84,15 +83,19 @@ const DotField = memo(
       }
 
       function doResize() {
-        const rect = canvas.parentElement!.getBoundingClientRect()
+        const c = canvasRef.current
+        if (!c) return
+        const cx = c.getContext("2d", { alpha: true })
+        if (!cx) return
+        const rect = c.parentElement!.getBoundingClientRect()
         const w = rect.width
         const h = rect.height
 
-        canvas.width = w * dpr
-        canvas.height = h * dpr
-        canvas.style.width = `${w}px`
-        canvas.style.height = `${h}px`
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+        c.width = w * dpr
+        c.height = h * dpr
+        c.style.width = `${w}px`
+        c.style.height = `${h}px`
+        cx.setTransform(dpr, 0, 0, dpr, 0, 0)
 
         sizeRef.current = {
           w,
@@ -159,10 +162,15 @@ const DotField = memo(
 
       function tick() {
         frameCount++
+        const c = canvasRef.current
+        const cx = c?.getContext("2d", { alpha: true })
+        if (!c || !cx) return
         const dots = dotsRef.current
         const m = mouseRef.current
         const { w, h } = sizeRef.current
         const p = propsRef.current as typeof propsRef.current & {
+          dotRadius: number
+          dotSpacing: number
           cursorRadius: number
           cursorForce: number
           bulgeOnly: boolean
@@ -189,19 +197,19 @@ const DotField = memo(
           glowEl.style.opacity = String(glowOpacity.current)
         }
 
-        ctx.clearRect(0, 0, w, h)
+        cx.clearRect(0, 0, w, h)
 
-        const grad = ctx.createLinearGradient(0, 0, w, h)
+        const grad = cx.createLinearGradient(0, 0, w, h)
         grad.addColorStop(0, p.gradientFrom)
         grad.addColorStop(1, p.gradientTo)
-        ctx.fillStyle = grad
+        cx.fillStyle = grad
 
         const cr = p.cursorRadius
         const crSq = cr * cr
         const rad = p.dotRadius / 2
         const isBulge = p.bulgeOnly
 
-        ctx.beginPath()
+        cx.beginPath()
 
         for (let i = 0; i < len; i++) {
           const d = dots[i]
@@ -249,19 +257,19 @@ const DotField = memo(
             const hash =
               ((i * 2654435761) ^ (frameCount >> 3)) >>> 0
             if (hash % 100 < 3) {
-              ctx.moveTo(drawX + rad * 1.8, drawY)
-              ctx.arc(drawX, drawY, rad * 1.8, 0, TWO_PI)
+              cx.moveTo(drawX + rad * 1.8, drawY)
+              cx.arc(drawX, drawY, rad * 1.8, 0, TWO_PI)
             } else {
-              ctx.moveTo(drawX + rad, drawY)
-              ctx.arc(drawX, drawY, rad, 0, TWO_PI)
+              cx.moveTo(drawX + rad, drawY)
+              cx.arc(drawX, drawY, rad, 0, TWO_PI)
             }
           } else {
-            ctx.moveTo(drawX + rad, drawY)
-            ctx.arc(drawX, drawY, rad, 0, TWO_PI)
+            cx.moveTo(drawX + rad, drawY)
+            cx.arc(drawX, drawY, rad, 0, TWO_PI)
           }
         }
 
-        ctx.fill()
+        cx.fill()
 
         rafRef.current = requestAnimationFrame(tick)
       }
@@ -311,7 +319,7 @@ const DotField = memo(
           }}
         >
           <defs>
-            <radialGradient id={glowIdRef.current}>
+            <radialGradient id={glowId}>
               <stop offset="0%" stopColor={glowColor} />
               <stop offset="100%" stopColor="transparent" />
             </radialGradient>
@@ -321,7 +329,7 @@ const DotField = memo(
             cx="-9999"
             cy="-9999"
             r={glowRadius}
-            fill={`url(#${glowIdRef.current})`}
+            fill={`url(#${glowId})`}
             style={{ opacity: 0, willChange: "opacity" }}
           />
         </svg>

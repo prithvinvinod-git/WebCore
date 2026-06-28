@@ -50,6 +50,7 @@ export default function ScanDetailPage() {
   const { scans, addScan, setIsScanning, isScanning, setScanProgress, scanProgress } = useScanStore()
   const [activeTab, setActiveTab] = useState("overview")
   const [notFound, setNotFound] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
 
   const scanId = params.id as string
   const urlParam = searchParams.get("url")
@@ -71,29 +72,57 @@ export default function ScanDetailPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: urlParam }),
       })
-        .then((r) => {
-          if (!r.ok) throw new Error("Scan failed")
+        .then(async (r) => {
+          if (!r.ok) {
+            const body = await r.json().catch(() => ({}))
+            throw new Error(body?.error || `Scan failed (${r.status})`)
+          }
           return r.json()
         })
         .then((s: ScanResult) => {
           s.id = scanId
           addScan(s)
         })
-        .catch(() => setNotFound(true))
+        .catch((err) => setErrorMsg(err.message))
         .finally(() => {
           setIsScanning(false)
           setScanProgress(100)
         })
     } else {
       fetch(`/api/v1/scan?id=${scanId}`)
-        .then((r) => {
-          if (!r.ok) throw new Error("Not found")
+        .then(async (r) => {
+          if (!r.ok) {
+            const body = await r.json().catch(() => ({}))
+            throw new Error(body?.error || "Scan not found")
+          }
           return r.json()
         })
         .then((s: ScanResult) => addScan(s))
         .catch(() => setNotFound(true))
     }
   }, [scanId, urlParam, scan, addScan, setIsScanning, setScanProgress])
+
+  if (errorMsg) {
+    return (
+      <div className="max-w-[900px] mx-auto px-6 py-12">
+        <Card>
+          <CardContent className="p-12 text-center">
+            <AlertTriangle size={32} className="mx-auto text-[#dc2626] mb-4" />
+            <h2 className="text-base font-semibold text-[#0a0a0a] mb-1">Scan failed</h2>
+            <p className="text-sm text-[#737373] mb-6">{errorMsg}</p>
+            <div className="flex items-center justify-center gap-3">
+              <Link href="/dashboard">
+                <Button>Back to Dashboard</Button>
+              </Link>
+              <Button variant="ghost" onClick={() => { setErrorMsg(""); fetchedRef.current = false; window.location.reload() }}>
+                Retry
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   if (!scan) {
     if (notFound) {

@@ -7,13 +7,14 @@ const scansCol = () => db.collection("scans")
 const findingsCol = () => db.collection("findings")
 const monitorsCol = () => db.collection("monitors")
 
-export async function createUser(uid: string, data: { email: string; name?: string; avatar?: string }) {
+export async function createUser(uid: string, data: { email: string; name?: string; photoURL?: string }) {
   await usersCol().doc(uid).set({
-    ...data,
-    credits: 100,
-    createdAt: new Date(),
-    lastLogin: new Date(),
-  })
+    id: uid,
+    email: data.email,
+    name: data.name || "",
+    photoURL: data.photoURL || "",
+    updatedAt: new Date().toISOString(),
+  }, { merge: true })
 }
 
 export async function getUser(uid: string) {
@@ -28,26 +29,43 @@ export async function updateUser(uid: string, data: Record<string, unknown>) {
 
 export async function createScan(scan: ScanResult, userId?: string) {
   await scansCol().doc(scan.id).set({
-    ...scan,
+    ...JSON.parse(JSON.stringify(scan)),
     userId: userId || null,
     createdAt: new Date(scan.createdAt),
   })
 }
 
+function serializeTimestamps<T>(obj: T): T {
+  if (!obj || typeof obj !== "object") return obj
+  if (obj instanceof Date) return obj.toISOString() as T
+  if (typeof (obj as Record<string, unknown>)._seconds === "number" && typeof (obj as Record<string, unknown>)._nanoseconds === "number") {
+    return new Date((obj as Record<string, unknown>)._seconds as number * 1000).toISOString() as T
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(serializeTimestamps) as T
+  }
+  const result: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(obj as Record<string, unknown>)) {
+    result[key] = serializeTimestamps(value)
+  }
+  return result as T
+}
+
 export async function getScans(limit = 100, userId?: string) {
-  let query = scansCol().orderBy("createdAt", "desc").limit(limit) as FirebaseFirestore.Query
+  let query = scansCol() as FirebaseFirestore.Query
   if (userId) {
     query = query.where("userId", "==", userId)
   }
+  query = query.orderBy("createdAt", "desc").limit(limit)
   const snapshot = await query.get()
-  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id })) as unknown as ScanResult[]
+  return snapshot.docs.map((d) => serializeTimestamps({ ...d.data(), id: d.id })) as unknown as ScanResult[]
 }
 
 export async function getScan(id: string) {
   const doc = await scansCol().doc(id).get()
   if (!doc.exists) return null
   const scanData = doc.data()!
-  return { ...scanData, id: doc.id } as unknown as ScanResult
+  return serializeTimestamps({ ...scanData, id: doc.id }) as unknown as ScanResult
 }
 
 export async function deleteScan(id: string) {
@@ -88,10 +106,11 @@ export async function createMonitor(config: MonitorConfig & { scanId: string; us
 }
 
 export async function getMonitors(userId?: string) {
-  let query = monitorsCol().orderBy("createdAt", "desc") as FirebaseFirestore.Query
+  let query = monitorsCol() as FirebaseFirestore.Query
   if (userId) {
     query = query.where("userId", "==", userId)
   }
+  query = query.orderBy("createdAt", "desc")
   const snapshot = await query.get()
   return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }))
 }
@@ -110,7 +129,7 @@ export async function getScanHistory(url: string, limit = 30) {
     .orderBy("createdAt", "desc")
     .limit(limit)
     .get()
-  return snapshot.docs.map((d) => ({ ...d.data(), id: d.id })) as unknown as ScanResult[]
+  return snapshot.docs.map((d) => serializeTimestamps({ ...d.data(), id: d.id })) as unknown as ScanResult[]
 }
 
 export async function createApiKey(uid: string, name: string) {

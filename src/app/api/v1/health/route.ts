@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/firebase"
 
+export const runtime = "nodejs"
+
 export async function GET() {
   const status: Record<string, unknown> = {
     status: "healthy",
@@ -19,3 +21,4 @@ export async function GET() {
 
   return NextResponse.json(status)
 }
+

@@ -32,7 +32,7 @@ export class ScanOrchestrator {
       accessibility: new AccessibilityScanner(),
     }
 
-    const results = await Promise.all([
+    const settled = await Promise.allSettled([
       scanners.security.scan(input),
       scanners.seo.scan(input),
       scanners.aeo.scan(input),
@@ -43,7 +43,28 @@ export class ScanOrchestrator {
       scanners.accessibility.scan(input),
     ])
 
-    const [security, seo, aeo, performance, indexing, aiReadiness, domain, accessibility] = results
+    const defaultModule = { score: 0, grade: "N/A", findings: [] }
+
+    function extract<T>(result: PromiseSettledResult<T>, fallback: T): T {
+      return result.status === "fulfilled" ? result.value : fallback
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const security: any = extract(settled[0], { ...defaultModule, headers: {}, tlsConfig: { valid: false, daysRemaining: 0, protocol: "", cipherStrength: "", hsts: false }, cves: [], secrets: [], baasFindings: [] })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const seo: any = extract(settled[1], { ...defaultModule, indexability: {}, onPage: {}, technical: {}, structuredData: { types: [], validCount: 0, invalidCount: 0 }, cwvData: { lcp: 0, inp: 0, cls: 0, fcp: 0, ttfb: 0 } })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const aeo: any = extract(settled[2], { ...defaultModule, crawlerAccess: [], extractability: {}, structuredDataDepth: {}, trustSignals: { citedBy: 0, contentFreshness: "", authorEeats: 0 }, engineMatrix: {} })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const performance: any = extract(settled[3], { ...defaultModule, lighthouse: { mobile: {}, desktop: {} } })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const indexing: any = extract(settled[4], { ...defaultModule, indexedCount: 0, crawlStats: {}, sitemapHealth: { valid: false, urlCount: 0, errors: [], lastModified: "" }, robotsHealth: { valid: false, blockedResources: [], sitemapRefs: [], aiCrawlerRules: 0 }, spaRendering: {} })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const aiReadiness: any = extract(settled[5], { ...defaultModule, llmFriendly: {}, voiceReadiness: {}, aiCrawlerAnalytics: {}, machineReadability: {} })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const domain: any = extract(settled[6], { ...defaultModule, dns: { hasA: false, hasAAAA: false, hasCname: false, hasMx: false, hasTxt: false, hasNs: false, dnssec: false }, email: { spf: false, dkim: false, dmarc: "", bimi: false }, uptime: { statusCode: 0, responseTimeMs: 0, isUp: false }, redirects: { chain: [], loops: false, tooMany: false }, certInfo: { valid: false, issuer: "", daysRemaining: 0 } })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const accessibility: any = extract(settled[7], { ...defaultModule, wcagChecks: [], screenReader: { optimal: false, issuesFound: 0, allImagesLabelled: false, headingStructure: false, ariaLive: false, keyboardNavigable: false }, contrast: { passed: false, failingElements: [], recommendations: [], smallTextRatio: "", largeTextRatio: "" }, autoAudit: { passed: 0, failed: 0, total: 0 } })
 
     const scores = [security.score, seo.score, aeo.score, performance.score, indexing.score, aiReadiness.score, domain.score, accessibility.score]
     const overallScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)

@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Shield } from "lucide-react"
 import { Features } from "@/components/blocks/features-8"
 import { Footer } from "@/components/layout/footer"
 import DotField from "@/components/ui/dot-field"
@@ -8,9 +7,8 @@ import ShinyText from "@/components/ui/ShinyText"
 import CurvedLoop from "@/components/ui/CurvedLoop"
 import Strands from "@/components/ui/Strands"
 import { DocsSection } from "@/components/blocks/docs-section"
-import CreditsButton from "@/components/ui/credits-button"
-import DocsLink from "@/components/ui/docs-link"
 import DashboardPreview from "@/components/ui/dashboard-preview"
+import LandingNav from "@/components/layout/landing-nav"
 import { getSession } from "@/lib/session"
 import { getScans } from "@/lib/firestore-service"
 
@@ -22,7 +20,7 @@ export default async function Home() {
   }
   return (
     <div className="flex flex-col flex-1">
-      <div className="absolute -z-20" style={{ top: '-460px', left: '-30px', width: '100%', height: '100vh' }}>
+      <div className="absolute -z-20" style={{ top: '-310px', left: '-30px', width: '100%', height: '100vh' }}>
         <Strands
           colors={["#F97316","#7C3AED","#06B6D4"]}
           count={3}
@@ -39,28 +37,7 @@ export default async function Home() {
           scale={1.5}
         />
       </div>
-      <header className="border-b border-[#e5e5e5] bg-white/80 backdrop-blur-sm">
-        <div className="max-w-[1200px] mx-auto px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Shield size={22} className="text-[#0a0a0a]" />
-            <span className="font-medium text-base text-[#0a0a0a]">WebCore</span>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <DocsLink>Docs</DocsLink>
-            <Link href="/pricing" className="text-sm font-medium text-[#7a7676] hover:text-[#0a0a0a] transition-colors">Pricing</Link>
-            {session ? (
-              <Link href="/dashboard" className="text-sm font-medium text-[#0a0a0a]">Dashboard</Link>
-            ) : (
-              <>
-                <Link href="/auth/login" className="text-sm font-medium text-[#0a0a0a]">Sign in</Link>
-                <Link href="/auth/signup">
-                  <CreditsButton>Get started</CreditsButton>
-                </Link>
-              </>
-            )}
-          </nav>
-        </div>
-      </header>
+      <LandingNav session={session} />
 
       <main className="flex-1">
         <section className="relative w-full px-6 py-20 sm:py-32 text-center min-h-screen flex flex-col justify-center overflow-hidden">
@@ -77,6 +54,8 @@ export default async function Home() {
               glowColor="rgba(124, 58, 237, 0)"
             />
           </div>
+
+          <div className="h-14" />
 
           <h1 className="font-nasalization text-[48px] sm:text-[72px] font-medium tracking-tight max-w-4xl mx-auto leading-[1.1]">
             <span className="animate-fade-in-up [animation-delay:0.1s] block">

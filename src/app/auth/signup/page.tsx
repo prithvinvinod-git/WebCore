@@ -36,7 +36,7 @@ export default function SignupPage() {
     try {
       await signInWithGoogle()
       const u = getAuth().currentUser
-      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ uid: u?.uid, email: u?.email, provider: "google", name: u?.displayName || "" }) })
+      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ uid: u?.uid, email: u?.email, provider: "google", name: u?.displayName || "", photoURL: u?.photoURL || "" }) })
       router.push("/dashboard")
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Google sign-up failed")
@@ -47,7 +47,7 @@ export default function SignupPage() {
     try {
       await signInWithGithub()
       const u = getAuth().currentUser
-      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ uid: u?.uid, email: u?.email, provider: "github", name: u?.displayName || "" }) })
+      await fetch("/api/v1/auth/session", { method: "POST", body: JSON.stringify({ uid: u?.uid, email: u?.email, provider: "github", name: u?.displayName || "", photoURL: u?.photoURL || "" }) })
       router.push("/dashboard")
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "GitHub sign-up failed")

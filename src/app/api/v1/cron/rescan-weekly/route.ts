@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { getMonitors, createScan } from "@/lib/firestore-service"
 import { scanUrl } from "@/scanner/pipeline/orchestrator"
 
+export const runtime = "nodejs"
+
 export const maxDuration = 60
 export const dynamic = "force-dynamic"
 
@@ -27,3 +29,4 @@ export async function GET() {
     return NextResponse.json({ ok: false, error: String(error) }, { status: 500 })
   }
 }
+

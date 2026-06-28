@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server"
+import { createUser } from "@/lib/firestore-service"
+
+export const runtime = "nodejs"
 
 export async function POST(request: NextRequest) {
   const body = await request.json()
+  const uid = body.uid || body.email
   const response = NextResponse.json({ success: true })
   const session = {
-    uid: body.uid || body.email,
+    uid,
     email: body.email,
     provider: body.provider || "email",
     name: body.name || "",
@@ -16,6 +20,11 @@ export async function POST(request: NextRequest) {
     maxAge: 60 * 60 * 24 * 7,
     path: "/",
   })
+  try {
+    await createUser(uid, { email: body.email, name: body.name, photoURL: body.photoURL })
+  } catch {
+    // user doc already exists or will be created on next login
+  }
   return response
 }
 

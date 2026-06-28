@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import { createApiKey, getApiKeys, deleteApiKey } from "@/lib/firestore-service"
 import { getSession } from "@/lib/session"
 
+export const runtime = "nodejs"
+
 export async function GET() {
   const session = await getSession()
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -26,3 +28,4 @@ export async function DELETE(request: NextRequest) {
   await deleteApiKey(session.uid, keyId)
   return NextResponse.json({ success: true })
 }
+

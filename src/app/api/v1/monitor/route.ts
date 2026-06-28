@@ -3,6 +3,8 @@ import { getMonitors, createMonitor, deleteMonitor, updateMonitor } from "@/lib/
 import type { MonitorConfig } from "@/types/scan"
 import { getUserId } from "@/lib/session"
 
+export const runtime = "nodejs"
+
 export async function GET() {
   const userId = await getUserId()
   const monitors = await getMonitors(userId)
@@ -47,3 +49,4 @@ export async function PATCH(request: NextRequest) {
   await updateMonitor(id, data)
   return NextResponse.json({ success: true })
 }
+
