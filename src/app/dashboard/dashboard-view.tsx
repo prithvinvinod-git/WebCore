@@ -41,8 +41,8 @@ export default function DashboardView({
     <div className="max-w-[1200px] mx-auto px-6 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-[24px] font-semibold text-[#0a0a0a]">Dashboard</h1>
-          <p className="text-sm text-[#737373] mt-1">
+          <h1 className="text-[24px] font-semibold text-[#0a0a0a] dark:text-white">Dashboard</h1>
+          <p className="text-sm text-[#737373] dark:text-neutral-400 mt-1">
             {displayScans.length} scan{displayScans.length !== 1 ? "s" : ""} completed
           </p>
         </div>
@@ -66,7 +66,7 @@ export default function DashboardView({
         <Card className="mb-8">
           <CardContent className="p-4 flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-[#3b82f6] animate-pulse" />
-            <span className="text-sm text-[#525252]">Scan in progress...</span>
+            <span className="text-sm text-[#525252] dark:text-neutral-400">Scan in progress...</span>
           </CardContent>
         </Card>
       )}
@@ -91,7 +91,7 @@ export default function DashboardView({
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <h2 className="text-sm font-semibold text-[#0a0a0a]">Latest Scan</h2>
+                  <h2 className="text-sm font-semibold text-[#0a0a0a] dark:text-white">Latest Scan</h2>
                   <Link href={`/dashboard/scan/${latestScan.id}`}>
                     <Button variant="ghost" size="sm">
                       View Details
@@ -101,12 +101,12 @@ export default function DashboardView({
               </CardHeader>
               <CardContent className="p-4">
                 <div className="flex items-center gap-4 text-sm">
-                  <span className="text-[#0a0a0a] font-medium">{latestScan.url}</span>
+                  <span className="text-[#0a0a0a] dark:text-white font-medium">{latestScan.url}</span>
                   <Pill variant={latestScan.overallScore >= 70 ? "success" : latestScan.overallScore >= 50 ? "warning" : "error"}>
                     Score: {latestScan.overallScore}
                   </Pill>
-                  <span className="text-[#737373]">{latestScan.durationMs}ms</span>
-                  <span className="text-[#737373]">{new Date(latestScan.createdAt).toLocaleDateString("en-US")}</span>
+                  <span className="text-[#737373] dark:text-neutral-400">{latestScan.durationMs}ms</span>
+                  <span className="text-[#737373] dark:text-neutral-400">{new Date(latestScan.createdAt).toLocaleDateString("en-US")}</span>
                 </div>
               </CardContent>
             </Card>
@@ -114,19 +114,19 @@ export default function DashboardView({
             {displayScans.length > 1 && (
               <Card>
                 <CardHeader>
-                  <h2 className="text-sm font-semibold text-[#0a0a0a]">Recent Scans</h2>
+                  <h2 className="text-sm font-semibold text-[#0a0a0a] dark:text-white">Recent Scans</h2>
                 </CardHeader>
                 <CardContent className="p-0">
-                  <div className="divide-y">
+                  <div className="divide-y dark:divide-neutral-700">
                     {displayScans.slice(1).map((scan) => (
                       <Link key={scan.id} href={`/dashboard/scan/${scan.id}`}>
-                        <div className="flex items-center gap-4 px-4 py-3 text-sm hover:bg-[#fafafa] transition-colors">
-                          <span className="text-[#0a0a0a] font-medium flex-1 truncate">{scan.url}</span>
+                        <div className="flex items-center gap-4 px-4 py-3 text-sm hover:bg-[#fafafa] dark:hover:bg-neutral-800 transition-colors">
+                          <span className="text-[#0a0a0a] dark:text-white font-medium flex-1 truncate">{scan.url}</span>
                           <Pill variant={scan.overallScore >= 70 ? "success" : scan.overallScore >= 50 ? "warning" : "error"}>
                             {scan.overallScore}
                           </Pill>
-                          <span className="text-[#737373] w-20 text-right">{scan.durationMs}ms</span>
-                          <span className="text-[#737373] w-24 text-right">{new Date(scan.createdAt).toLocaleDateString()}</span>
+                          <span className="text-[#737373] dark:text-neutral-400 w-20 text-right">{scan.durationMs}ms</span>
+                          <span className="text-[#737373] dark:text-neutral-400 w-24 text-right">{new Date(scan.createdAt).toLocaleDateString()}</span>
                         </div>
                       </Link>
                     ))}
@@ -140,9 +140,9 @@ export default function DashboardView({
         <Card>
           <CardContent className="p-12 text-center">
             <div className="max-w-sm mx-auto">
-              <Shield size={32} className="mx-auto text-[#d4d4d4] mb-4" />
-              <h2 className="text-lg font-semibold text-[#0a0a0a] mb-2">No scans yet</h2>
-              <p className="text-sm text-[#737373] mb-6">
+              <Shield size={32} className="mx-auto text-[#d4d4d4] dark:text-neutral-600 mb-4" />
+              <h2 className="text-lg font-semibold text-[#0a0a0a] dark:text-white mb-2">No scans yet</h2>
+              <p className="text-sm text-[#737373] dark:text-neutral-400 mb-6">
                 Run your first scan to see your website&apos;s complete diagnostic report.
               </p>
               <Link href="/dashboard/new">

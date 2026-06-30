@@ -47,26 +47,26 @@ export function DashboardSidebarFooter({ serverSession }: { serverSession?: { ui
     <div ref={dropdownRef} className="relative -mt-[90px]">
       <button
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex w-full items-center gap-3 rounded-full border border-neutral-300 px-3 py-2 hover:bg-neutral-100 transition-colors"
+        className="flex w-full items-center gap-3 rounded-full border border-neutral-300 dark:border-neutral-700 px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
       >
         {photoURL ? (
           <img
             src={photoURL}
             alt=""
-            className="h-8 w-8 shrink-0 rounded-full border border-neutral-400 object-cover"
+            className="h-8 w-8 shrink-0 rounded-full border border-neutral-400 dark:border-neutral-600 object-cover"
           />
         ) : (
-          <div className="h-8 w-8 shrink-0 rounded-full border border-neutral-400 bg-neutral-200 flex items-center justify-center text-sm font-medium text-neutral-600">
+          <div className="h-8 w-8 shrink-0 rounded-full border border-neutral-400 dark:border-neutral-600 bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-sm font-medium text-neutral-600 dark:text-neutral-400">
             {initials}
           </div>
         )}
         {open && (
           <>
             <div className="flex flex-1 flex-col overflow-hidden text-left">
-              <span className="text-sm font-medium text-neutral-700 truncate">{displayName || email}</span>
+              <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300 truncate">{displayName || email}</span>
             </div>
             <IconChevronUp
-              className={`h-4 w-4 text-neutral-400 transition-transform ${dropdownOpen ? "" : "rotate-180"}`}
+              className={`h-4 w-4 text-neutral-400 dark:text-neutral-500 transition-transform ${dropdownOpen ? "" : "rotate-180"}`}
             />
           </>
         )}

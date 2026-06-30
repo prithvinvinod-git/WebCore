@@ -15,7 +15,7 @@ export function ScoreCard({ label, score, accentColor, className }: ScoreCardPro
     <Card className={cn("min-w-[140px]", className)}>
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-[#737373] font-medium uppercase tracking-wide">
+          <span className="text-xs text-[#737373] dark:text-neutral-400 font-medium uppercase tracking-wide">
             {label}
           </span>
           <span
@@ -29,9 +29,9 @@ export function ScoreCard({ label, score, accentColor, className }: ScoreCardPro
           <span className="text-3xl font-medium" style={{ color: accentColor }}>
             {score}
           </span>
-          <span className="text-sm text-[#737373]">/ 100</span>
+          <span className="text-sm text-[#737373] dark:text-neutral-400">/ 100</span>
         </div>
-        <div className="mt-2 h-1.5 rounded-full bg-[#e5e5e5] overflow-hidden">
+        <div className="mt-2 h-1.5 rounded-full bg-[#e5e5e5] dark:bg-neutral-700 overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-500"
             style={{ width: `${score}%`, backgroundColor: accentColor }}

@@ -1,7 +1,29 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --color-body-bg: #fafafa;
+}
+
 html {
   scroll-behavior: smooth;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark {
+  --color-body-bg: #0a0a0a;
+  --color-paper-white: #0a0a0a;
+  --color-ink-black: #f5f5f5;
+  --color-carbon: #fafafa;
+  --color-smoke-50: #171717;
+  --color-smoke-100: #262626;
+  --color-smoke-200: #404040;
+  --color-smoke-400: #737373;
+  --color-smoke-500: #a3a3a3;
+  --color-smoke-600: #d4d4d4;
+  --color-smoke-700: #e5e5e5;
+  --color-primary-action-fill: #ffffff;
 }
 
 @font-face {
@@ -78,7 +100,7 @@ html {
 }
 
 body {
-  background: #fafafa;
+  background: var(--color-body-bg);
   color: var(--color-ink-black);
   font-family: var(--font-nasalization);
 }

@@ -66,7 +66,7 @@ export default async function Home() {
               <ShinyText text="Diagnostic Brain" color="#0a0a0a" shineColor="#8A2BE2" speed={3} spread={150} />
             </span>
           </h1>
-          <p className="text-base sm:text-lg text-[#7a7676] max-w-2xl mx-auto mt-4 leading-relaxed">
+          <p className="text-base sm:text-lg text-[#7a7676] dark:text-neutral-400 max-w-2xl mx-auto mt-4 leading-relaxed">
             Security, Visibility, Performance, AI Readiness — all in one scan.
             Enter any URL and get a comprehensive diagnostic report in seconds.
           </p>
@@ -81,12 +81,12 @@ export default async function Home() {
             </Link>
           </div>
           <div className="mt-16 flex items-start gap-8 ml-[130px]">
-            <div className="max-w-xl w-full rounded-xl border border-neutral-200 bg-white overflow-hidden">
-              <div className="flex items-center gap-1.5 px-4 py-3 border-b border-neutral-200 bg-neutral-100">
+            <div className="max-w-xl w-full rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 overflow-hidden">
+              <div className="flex items-center gap-1.5 px-4 py-3 border-b border-neutral-200 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800">
                 <span className="h-3 w-3 rounded-full bg-red-500 transition-colors hover:bg-red-600" />
                 <span className="h-3 w-3 rounded-full bg-yellow-500 transition-colors hover:bg-yellow-600" />
                 <span className="h-3 w-3 rounded-full bg-green-500 transition-colors hover:bg-green-600" />
-                <span className="ml-2 text-xs text-neutral-500 font-mono">dashboard.webcore.dev</span>
+                <span className="ml-2 text-xs text-neutral-500 dark:text-neutral-400 font-mono">dashboard.webcore.dev</span>
               </div>
               <DashboardPreview initialScans={recentScans} />
             </div>

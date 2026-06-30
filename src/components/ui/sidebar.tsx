@@ -87,7 +87,7 @@ export const DesktopSidebar = ({
   return (
     <motion.div
       className={cn(
-        "h-screen px-[18px] py-4 hidden md:flex md:flex-col bg-neutral-50 w-[315px] shrink-0",
+        "h-screen px-[18px] py-4 hidden md:flex md:flex-col bg-neutral-50 dark:bg-neutral-950 w-[315px] shrink-0",
         className,
       )}
       animate={{
@@ -113,7 +113,7 @@ export const MobileSidebar = ({
       <div
         {...props}
         className={cn(
-          "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-white w-full border-b border-neutral-200",
+          "h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-white dark:bg-neutral-950 w-full border-b border-neutral-200 dark:border-neutral-800",
           className,
         )}
       >
@@ -134,7 +134,7 @@ export const MobileSidebar = ({
                 ease: "easeInOut",
               }}
               className={cn(
-                "fixed h-full w-full inset-0 bg-white p-10 z-[100] flex flex-col justify-between",
+                "fixed h-full w-full inset-0 bg-white dark:bg-neutral-950 p-10 z-[100] flex flex-col justify-between",
                 className,
               )}
             >
@@ -165,7 +165,7 @@ export const SidebarLink = ({
     <Link
       href={link.href}
       className={cn(
-        "flex items-center gap-3 group/sidebar py-2.5 px-3 rounded-md hover:bg-neutral-100 transition-colors",
+        "flex items-center gap-3 group/sidebar py-2.5 px-3 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors",
         className,
       )}
     >
@@ -176,7 +176,7 @@ export const SidebarLink = ({
           width: animate ? (open ? "auto" : 0) : "auto",
           opacity: animate ? (open ? 1 : 0) : 1,
         }}
-        className="text-neutral-700 text-sm overflow-hidden whitespace-nowrap group-hover/sidebar:translate-x-1 transition duration-150"
+        className="text-neutral-700 dark:text-neutral-300 text-sm overflow-hidden whitespace-nowrap group-hover/sidebar:translate-x-1 transition duration-150"
       >
         {link.label}
       </motion.span>

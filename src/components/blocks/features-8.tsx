@@ -109,8 +109,8 @@ export function Features() {
                 <div className="relative h-28 w-full px-4">
                   <BarChart />
                 </div>
-                <h2 className="mt-4 text-center text-xl font-semibold text-[#0a0a0a]">150+ Security Checks</h2>
-                <p className="mt-1 text-center text-sm text-[#7a7676] px-2 pb-4">
+                <h2 className="mt-4 text-center text-xl font-semibold text-[#0a0a0a] dark:text-white">150+ Security Checks</h2>
+                <p className="mt-1 text-center text-sm text-[#7a7676] dark:text-neutral-400 px-2 pb-4">
                   CVE scanning, TLS config, secret leak detection, and more
                 </p>
               </CardContent>
@@ -122,8 +122,8 @@ export function Features() {
                   <RadarChart />
                 </div>
                 <div className="relative z-10 mt-4 space-y-2 text-center px-2 pb-4">
-                  <h2 className="text-lg font-medium text-[#0a0a0a]">Domain Health</h2>
-                  <p className="text-sm text-[#7a7676]">DNS records, email security, SSL certs, redirect chains</p>
+                  <h2 className="text-lg font-medium text-[#0a0a0a] dark:text-white">Domain Health</h2>
+                  <p className="text-sm text-[#7a7676] dark:text-neutral-400">DNS records, email security, SSL certs, redirect chains</p>
                 </div>
               </CardContent>
             </Card>
@@ -134,8 +134,8 @@ export function Features() {
                   <LineChart />
                 </div>
                 <div className="relative z-10 mt-6 space-y-2 text-center px-2 pb-4">
-                  <h2 className="text-lg font-medium text-[#0a0a0a]">SEO &amp; AEO</h2>
-                  <p className="text-sm text-[#7a7676]">80+ SEO checks, 60+ AEO checks, AI crawler analysis</p>
+                  <h2 className="text-lg font-medium text-[#0a0a0a] dark:text-white">SEO &amp; AEO</h2>
+                  <p className="text-sm text-[#7a7676] dark:text-neutral-400">80+ SEO checks, 60+ AEO checks, AI crawler analysis</p>
                 </div>
               </CardContent>
             </Card>
@@ -143,12 +143,12 @@ export function Features() {
             <Card className={`relative col-span-full overflow-hidden lg:col-span-3 ${cardAnimation} ${delays[3]}`}>
               <CardContent className="grid pt-6 sm:grid-cols-2 gap-4">
                 <div className="relative z-10 flex flex-col justify-between">
-                  <div className="relative flex size-10 rounded-full border border-[#e5e5e5] items-center justify-center">
+                  <div className="relative flex size-10 rounded-full border border-[#e5e5e5] dark:border-neutral-700 items-center justify-center">
                     <Gauge size={18} className="text-[#ea580c]" strokeWidth={1.5} />
                   </div>
                   <div className="space-y-2 mt-4">
-                    <h2 className="text-lg font-medium text-[#0a0a0a]">Performance Metrics</h2>
-                    <p className="text-sm text-[#7a7676]">Core Web Vitals, load time breakdown, optimization scores</p>
+                    <h2 className="text-lg font-medium text-[#0a0a0a] dark:text-white">Performance Metrics</h2>
+                    <p className="text-sm text-[#7a7676] dark:text-neutral-400">Core Web Vitals, load time breakdown, optimization scores</p>
                   </div>
                 </div>
                 <div className="relative h-32 sm:h-full min-h-[100px]">
@@ -160,22 +160,22 @@ export function Features() {
             <Card className={`relative col-span-full overflow-hidden lg:col-span-3 ${cardAnimation} ${delays[4]}`}>
               <CardContent className="grid h-full pt-6 sm:grid-cols-2 gap-4">
                 <div className="relative z-10 flex flex-col justify-between">
-                  <div className="relative flex size-10 rounded-full border border-[#e5e5e5] items-center justify-center">
+                    <div className="relative flex size-10 rounded-full border border-[#e5e5e5] dark:border-neutral-700 items-center justify-center">
                     <BarChart3 size={18} className="text-[#7c3aed]" strokeWidth={1.5} />
                   </div>
                   <div className="space-y-2 mt-4">
-                    <h2 className="text-lg font-medium text-[#0a0a0a]">AI Readiness</h2>
-                    <p className="text-sm text-[#7a7676]">LLM-friendliness, voice search, machine readability</p>
+                    <h2 className="text-lg font-medium text-[#0a0a0a] dark:text-white">AI Readiness</h2>
+                    <p className="text-sm text-[#7a7676] dark:text-neutral-400">LLM-friendliness, voice search, machine readability</p>
                   </div>
                 </div>
                 <div className="relative flex flex-col justify-center space-y-3 py-4">
-                  {[
-                    { label: "LLM Friendly", value: "98%", color: "bg-[#16a34a]" },
-                    { label: "Voice Ready", value: "92%", color: "bg-[#3b82f6]" },
-                    { label: "Machine Readable", value: "95%", color: "bg-[#7c3aed]" },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 justify-end">
-                      <span className="text-xs text-[#7a7676] font-medium">{item.label}</span>
+                    {[
+                      { label: "LLM Friendly", value: "98%", color: "bg-[#16a34a]" },
+                      { label: "Voice Ready", value: "92%", color: "bg-[#3b82f6]" },
+                      { label: "Machine Readable", value: "95%", color: "bg-[#7c3aed]" },
+                    ].map((item, i) => (
+                      <div key={i} className="flex items-center gap-3 justify-end">
+                        <span className="text-xs text-[#7a7676] dark:text-neutral-400 font-medium">{item.label}</span>
                       <div className={`size-7 rounded-full ${item.color} flex items-center justify-center text-[10px] font-bold text-white`}>
                         {item.value}
                       </div>

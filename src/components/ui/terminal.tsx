@@ -471,11 +471,11 @@ export function Terminal({
   }
 
   const prompt = (
-    <span className="text-neutral-500">
-      <span className="text-sky-700">{username}</span>
-      <span className="text-emerald-800">:</span>
-      <span className="text-sky-700">~</span>
-      <span className="text-neutral-600">$</span>{" "}
+    <span className="text-neutral-500 dark:text-neutral-400">
+      <span className="text-sky-700 dark:text-sky-400">{username}</span>
+      <span className="text-emerald-800 dark:text-emerald-400">:</span>
+      <span className="text-sky-700 dark:text-sky-400">~</span>
+      <span className="text-neutral-600 dark:text-neutral-400">$</span>{" "}
     </span>
   )
 
@@ -487,15 +487,15 @@ export function Terminal({
         className,
       )}
     >
-      <div className={cn("overflow-hidden rounded-lg border transition-shadow duration-200", focused ? "border-violet-500 shadow-[0_0_20px_rgba(139,92,246,0.3)]" : "border-neutral-200 shadow-md", "bg-white")}>
-        <div className="flex items-center gap-2 bg-neutral-100 px-4 py-3">
+      <div className={cn("overflow-hidden rounded-lg border transition-shadow duration-200", focused ? "border-violet-500 shadow-[0_0_20px_rgba(139,92,246,0.3)]" : "border-neutral-200 shadow-md", "bg-white dark:bg-neutral-900")}>
+        <div className="flex items-center gap-2 bg-neutral-100 dark:bg-neutral-800 px-4 py-3">
           <div className="flex items-center gap-1.5">
             <div className="h-3 w-3 rounded-full bg-red-500 transition-colors hover:bg-red-600" />
             <div className="h-3 w-3 rounded-full bg-yellow-500 transition-colors hover:bg-yellow-600" />
             <div className="h-3 w-3 rounded-full bg-green-500 transition-colors hover:bg-green-600" />
           </div>
           <div className="flex-1 text-center">
-            <span className="truncate text-xs text-black">
+            <span className="truncate text-xs text-black dark:text-white">
               {username} &mdash; bash
             </span>
           </div>
@@ -505,7 +505,7 @@ export function Terminal({
         <div
           ref={contentRef}
           onClick={() => inputRef.current?.focus()}
-          className="h-[200px] sm:h-[280px] overflow-y-auto pl-5 pt-5 pr-4 pb-4 font-mono cursor-text bg-white [scrollbar-width:thin] [scrollbar-color:#d4d4d4_transparent]"
+          className="h-[200px] sm:h-[280px] overflow-y-auto pl-5 pt-5 pr-4 pb-4 font-mono cursor-text bg-white dark:bg-neutral-900 [scrollbar-width:thin] [scrollbar-color:#d4d4d4_transparent] dark:[scrollbar-color:#525252_transparent]"
         >
           {lines.map((line, i) => (
             <div key={i} className="leading-relaxed whitespace-pre-wrap">
@@ -515,7 +515,7 @@ export function Terminal({
                   <SyntaxHighlightedText text={line.content} />
                 </span>
               ) : (
-                <span className="text-neutral-700">{line.content}</span>
+                <span className="text-neutral-700 dark:text-neutral-300">{line.content}</span>
               )}
             </div>
           ))}
@@ -524,7 +524,7 @@ export function Terminal({
             <div className="leading-relaxed whitespace-pre-wrap">
               {prompt}
               <SyntaxHighlightedText text={currentText} />
-              <span className="ml-0.5 inline-block h-4 w-2 bg-neutral-400 align-middle" />
+              <span className="ml-0.5 inline-block h-4 w-2 bg-neutral-400 dark:bg-neutral-500 align-middle" />
             </div>
           )}
 
@@ -535,7 +535,7 @@ export function Terminal({
               {prompt}
               <span
                 className={cn(
-                  "inline-block h-4 w-2 bg-neutral-400 align-middle transition-opacity duration-100",
+                  "inline-block h-4 w-2 bg-neutral-400 dark:bg-neutral-500 align-middle transition-opacity duration-100",
                   !cursorVisible && "opacity-0",
                 )}
               />
@@ -545,10 +545,10 @@ export function Terminal({
           {isInteractive && (
             <div className="leading-relaxed whitespace-pre-wrap">
               {prompt}
-              <span className="text-green-600">{userInput}</span>
+              <span className="text-green-600 dark:text-green-400">{userInput}</span>
               <span
                 className={cn(
-                  "ml-0.5 inline-block h-4 w-2 bg-neutral-400 align-middle transition-opacity duration-100",
+                  "ml-0.5 inline-block h-4 w-2 bg-neutral-400 dark:bg-neutral-500 align-middle transition-opacity duration-100",
                   !cursorVisible && "opacity-0",
                 )}
               />

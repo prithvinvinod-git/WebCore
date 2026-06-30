@@ -85,22 +85,22 @@ const techItems = [
 
 export function DocsSection() {
   return (
-    <section id="docs" className="py-20 md:py-32 bg-white">
+    <section id="docs" className="py-20 md:py-32 bg-white dark:bg-black">
       <div className="mx-auto max-w-6xl px-6">
 
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#0a0a0a] tracking-tight opacity-0 animate-fade-in-up [animation-delay:0.1s]">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#0a0a0a] dark:text-white tracking-tight opacity-0 animate-fade-in-up [animation-delay:0.1s]">
             Everything You Need to Know
           </h2>
-          <p className="mt-3 text-[#7a7676] text-base sm:text-lg leading-relaxed opacity-0 animate-fade-in-up [animation-delay:0.2s]">
+          <p className="mt-3 text-[#7a7676] dark:text-neutral-400 text-base sm:text-lg leading-relaxed opacity-0 animate-fade-in-up [animation-delay:0.2s]">
             WebCore is a comprehensive website diagnostic platform. Here&apos;s how it works and what powers it.
           </p>
         </div>
 
         {/* Features */}
         <div className="mb-24">
-          <h3 className="text-xl font-semibold text-[#0a0a0a] mb-8 flex items-center gap-2 opacity-0 animate-fade-in-up">
+          <h3 className="text-xl font-semibold text-[#0a0a0a] dark:text-white mb-8 flex items-center gap-2 opacity-0 animate-fade-in-up">
             <Check size={20} className="text-[#16a34a]" />
             Features
           </h3>
@@ -108,14 +108,14 @@ export function DocsSection() {
             {features.map((f, i) => (
               <div
                 key={f.title}
-                className={`rounded-xl border border-[#e5e5e5] p-5 hover:border-[#d0d0d0] transition-colors ${fadeInUp}`}
+                className={`rounded-xl border border-[#e5e5e5] dark:border-neutral-800 p-5 hover:border-[#d0d0d0] dark:hover:border-neutral-700 transition-colors ${fadeInUp}`}
                 style={{ animationDelay: `${0.1 + i * 0.05}s` }}
               >
                 <div className={`size-10 rounded-lg ${f.bg} flex items-center justify-center mb-3`}>
                   <f.icon size={18} className={f.color} />
                 </div>
-                <h4 className="font-semibold text-[#0a0a0a] text-sm">{f.title}</h4>
-                <p className="text-xs text-[#7a7676] mt-1 leading-relaxed">{f.desc}</p>
+                <h4 className="font-semibold text-[#0a0a0a] dark:text-white text-sm">{f.title}</h4>
+                <p className="text-xs text-[#7a7676] dark:text-neutral-400 mt-1 leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -123,24 +123,24 @@ export function DocsSection() {
 
         {/* How It Works */}
         <div className="mb-24">
-          <h3 className="text-xl font-semibold text-[#0a0a0a] mb-8 flex items-center gap-2 opacity-0 animate-fade-in-up">
+          <h3 className="text-xl font-semibold text-[#0a0a0a] dark:text-white mb-8 flex items-center gap-2 opacity-0 animate-fade-in-up">
             <Cpu size={20} className="text-[#7c3aed]" />
             How It Works
           </h3>
           <div className="relative">
-            <div className="absolute left-[23px] top-0 bottom-0 w-px bg-[#e5e5e5] hidden sm:block" />
+            <div className="absolute left-[23px] top-0 bottom-0 w-px bg-[#e5e5e5] dark:bg-neutral-800 hidden sm:block" />
             <div className="space-y-8">
               {steps.map((s, i) => (
                 <div key={s.step} className={`relative flex items-start gap-5 ${fadeInUp}`} style={{ animationDelay: `${0.1 + i * 0.1}s` }}>
-                  <div className="relative z-10 size-[46px] shrink-0 rounded-full border border-[#e5e5e5] bg-white flex items-center justify-center">
+                  <div className="relative z-10 size-[46px] shrink-0 rounded-full border border-[#e5e5e5] dark:border-neutral-800 bg-white dark:bg-neutral-950 flex items-center justify-center">
                     <span className="text-xs font-bold text-[#7c3aed]">{s.step}</span>
                   </div>
                   <div className="pt-2">
                     <div className="flex items-center gap-2">
-                      <s.icon size={16} className="text-[#7a7676]" />
-                      <h4 className="font-semibold text-[#0a0a0a] text-sm">{s.title}</h4>
+                      <s.icon size={16} className="text-[#7a7676] dark:text-neutral-400" />
+                      <h4 className="font-semibold text-[#0a0a0a] dark:text-white text-sm">{s.title}</h4>
                     </div>
-                    <p className="text-xs text-[#7a7676] mt-1 leading-relaxed max-w-lg">{s.desc}</p>
+                    <p className="text-xs text-[#7a7676] dark:text-neutral-400 mt-1 leading-relaxed max-w-lg">{s.desc}</p>
                   </div>
                 </div>
               ))}
@@ -150,7 +150,7 @@ export function DocsSection() {
 
         {/* Tech Stack */}
         <div>
-          <h3 className="text-xl font-semibold text-[#0a0a0a] mb-8 flex items-center gap-2 opacity-0 animate-fade-in-up">
+          <h3 className="text-xl font-semibold text-[#0a0a0a] dark:text-white mb-8 flex items-center gap-2 opacity-0 animate-fade-in-up">
             <Layers size={20} className="text-[#06b6d4]" />
             Tech Stack
           </h3>
@@ -158,15 +158,15 @@ export function DocsSection() {
             {techItems.map((t, i) => (
               <div
                 key={t.label}
-                className={`rounded-xl border border-[#e5e5e5] p-4 flex items-start gap-3 hover:border-[#d0d0d0] transition-colors ${fadeInUp}`}
+                className={`rounded-xl border border-[#e5e5e5] dark:border-neutral-800 p-4 flex items-start gap-3 hover:border-[#d0d0d0] dark:hover:border-neutral-700 transition-colors ${fadeInUp}`}
                 style={{ animationDelay: `${0.1 + i * 0.05}s` }}
               >
-                <div className="size-9 rounded-lg bg-[#f5f5f5] flex items-center justify-center shrink-0">
-                  <t.icon size={16} className="text-[#0a0a0a]" />
+                <div className="size-9 rounded-lg bg-[#f5f5f5] dark:bg-neutral-800 flex items-center justify-center shrink-0">
+                  <t.icon size={16} className="text-[#0a0a0a] dark:text-white" />
                 </div>
                 <div>
-                  <h4 className="font-semibold text-[#0a0a0a] text-sm">{t.label}</h4>
-                  <p className="text-xs text-[#7a7676] mt-0.5">{t.desc}</p>
+                  <h4 className="font-semibold text-[#0a0a0a] dark:text-white text-sm">{t.label}</h4>
+                  <p className="text-xs text-[#7a7676] dark:text-neutral-400 mt-0.5">{t.desc}</p>
                 </div>
               </div>
             ))}
@@ -175,7 +175,7 @@ export function DocsSection() {
 
         {/* CTA */}
         <div className={`mt-16 text-center ${fadeInUp}`} style={{ animationDelay: '0.6s' }}>
-          <p className="text-sm text-[#7a7676] mb-4">Ready to scan your website?</p>
+          <p className="text-sm text-[#7a7676] dark:text-neutral-400 mb-4">Ready to scan your website?</p>
           <a
             href="/dashboard/new"
             className="inline-flex items-center gap-2 bg-[#8A2BE2] hover:bg-[#7B2D8E] text-white text-sm font-medium px-6 py-2.5 rounded-lg transition-colors"

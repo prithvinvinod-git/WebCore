@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Shield, ArrowLeft } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 
 export default function ForgotPasswordPage() {
   const { resetPassword } = useAuth()
@@ -28,15 +29,18 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4">
-      <Link href="/" className="flex items-center gap-2 mb-8">
-        <Shield size={28} className="text-[#0a0a0a]" />
-        <span className="font-inter text-xl font-semibold text-[#0a0a0a]">WebCore</span>
-      </Link>
+      <div className="flex items-center gap-3 mb-8">
+        <Link href="/" className="flex items-center gap-2">
+          <Shield size={28} className="text-[#0a0a0a] dark:text-white" />
+          <span className="font-inter text-xl font-semibold text-[#0a0a0a] dark:text-white">WebCore</span>
+        </Link>
+        <ThemeToggle />
+      </div>
 
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-[#0a0a0a]">Reset your password</h1>
-          <p className="text-sm text-[#737373] mt-1">We&apos;ll send you a reset link</p>
+          <h1 className="text-2xl font-semibold text-[#0a0a0a] dark:text-white">Reset your password</h1>
+          <p className="text-sm text-[#737373] dark:text-neutral-400 mt-1">We&apos;ll send you a reset link</p>
         </div>
 
         {error && (
@@ -52,20 +56,20 @@ export default function ForgotPasswordPage() {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-[#0a0a0a] mb-1">Email</label>
+              <label className="block text-sm font-medium text-[#0a0a0a] dark:text-white mb-1">Email</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="w-full px-3 py-2 border border-[#e5e5e5] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0a0a0a]/10 focus:border-[#0a0a0a]"
+                className="w-full px-3 py-2 bg-white dark:bg-neutral-900 text-[#0a0a0a] dark:text-white placeholder:text-[#a3a3a3] dark:placeholder:text-neutral-500 border border-[#e5e5e5] dark:border-neutral-800 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0a0a0a]/10 focus:border-[#0a0a0a] dark:focus:border-white dark:focus:ring-white/10"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2 bg-[#0a0a0a] text-white rounded-full text-sm font-medium hover:bg-[#262626] transition-colors disabled:opacity-50"
+              className="w-full py-2 bg-[#0a0a0a] dark:bg-white text-white dark:text-[#0a0a0a] rounded-full text-sm font-medium hover:bg-[#262626] dark:hover:bg-neutral-200 transition-colors disabled:opacity-50"
             >
               {loading ? "Sending..." : "Send reset link"}
             </button>
@@ -73,7 +77,7 @@ export default function ForgotPasswordPage() {
         )}
 
         <div className="mt-6 text-center">
-          <Link href="/auth/login" className="inline-flex items-center gap-1 text-sm text-[#737373] hover:text-[#0a0a0a]">
+          <Link href="/auth/login" className="inline-flex items-center gap-1 text-sm text-[#737373] dark:text-neutral-400 hover:text-[#0a0a0a] dark:hover:text-white">
             <ArrowLeft size={14} />
             Back to sign in
           </Link>
