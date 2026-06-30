@@ -57,7 +57,7 @@ const sidebarLinks = [
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession()
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex h-screen overflow-hidden bg-neutral-50">
       <Sidebar>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
@@ -71,11 +71,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <DashboardSidebarFooter serverSession={session} />
         </SidebarBody>
       </Sidebar>
-      <main className="flex-1 pl-[75px] pt-[100px] mb-5">
-        <div className="flex h-full w-full flex-1 flex-col rounded-tl-2xl border border-neutral-200 bg-white p-2 md:p-10">
-          {children}
-        </div>
-      </main>
+      <main className="flex-1 overflow-y-auto mt-[30px] pt-[100px] mb-5 bg-white border-t border-l border-neutral-200 rounded-l-2xl">{children}</main>
     </div>
   )
 }

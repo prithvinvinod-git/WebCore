@@ -34,7 +34,7 @@ export default async function Home() {
           spread={1}
           intensity={0.6}
           saturation={1.5}
-          opacity={0.3}
+          opacity={0.6}
           scale={1.5}
         />
       </div>
@@ -81,12 +81,12 @@ export default async function Home() {
             </Link>
           </div>
           <div className="mt-16 flex items-start gap-8 ml-[130px]">
-            <div className="max-w-xl w-full rounded-xl border border-neutral-800 bg-neutral-900 overflow-hidden">
-              <div className="flex items-center gap-1.5 px-4 py-3 border-b border-neutral-700 bg-neutral-800">
+            <div className="max-w-xl w-full rounded-xl border border-neutral-200 bg-white overflow-hidden">
+              <div className="flex items-center gap-1.5 px-4 py-3 border-b border-neutral-200 bg-neutral-100">
                 <span className="h-3 w-3 rounded-full bg-red-500 transition-colors hover:bg-red-600" />
                 <span className="h-3 w-3 rounded-full bg-yellow-500 transition-colors hover:bg-yellow-600" />
                 <span className="h-3 w-3 rounded-full bg-green-500 transition-colors hover:bg-green-600" />
-                <span className="ml-2 text-xs text-neutral-400 font-mono">dashboard.webcore.dev</span>
+                <span className="ml-2 text-xs text-neutral-500 font-mono">dashboard.webcore.dev</span>
               </div>
               <DashboardPreview initialScans={recentScans} />
             </div>

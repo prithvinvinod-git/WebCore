@@ -106,7 +106,7 @@ export default function DashboardView({
                     Score: {latestScan.overallScore}
                   </Pill>
                   <span className="text-[#737373]">{latestScan.durationMs}ms</span>
-                  <span className="text-[#737373]">{new Date(latestScan.createdAt).toLocaleDateString()}</span>
+                  <span className="text-[#737373]">{new Date(latestScan.createdAt).toLocaleDateString("en-US")}</span>
                 </div>
               </CardContent>
             </Card>

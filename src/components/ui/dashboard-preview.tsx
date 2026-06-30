@@ -19,16 +19,16 @@ export default function DashboardPreview({ initialScans }: { initialScans?: Scan
   }
 
   return (
-    <div className="p-4 sm:p-6 space-y-3 min-h-[200px] sm:min-h-[280px] overflow-y-auto [scrollbar-width:thin] [scrollbar-color:#525252_transparent]">
-      <p className="text-xs font-medium text-neutral-400 uppercase tracking-wider">Your Recent Scans</p>
+    <div className="p-4 sm:p-6 space-y-3 min-h-[200px] sm:min-h-[280px] overflow-y-auto bg-white [scrollbar-width:thin] [scrollbar-color:#d4d4d4_transparent]">
+      <p className="text-xs font-medium text-neutral-500 uppercase tracking-wider">Your Recent Scans</p>
       {scans.slice(0, 5).map((s) => (
         <a
           key={s.id}
           href={`/dashboard/scan/${s.id}`}
-          className="block rounded-lg border border-neutral-700 bg-neutral-800 p-3 hover:border-neutral-600 hover:bg-neutral-700 transition-colors"
+          className="block rounded-lg border border-neutral-200 bg-white p-3 hover:border-neutral-300 hover:bg-neutral-50 transition-colors"
         >
           <div className="flex items-center justify-between gap-2">
-            <span className="text-sm font-medium text-neutral-200 truncate">{s.url}</span>
+            <span className="text-sm font-medium text-neutral-800 truncate">{s.url}</span>
             <span className="shrink-0 text-xs font-bold px-2 py-0.5 rounded-full" style={{
               backgroundColor: (s.overallScore ?? 0) >= 70 ? '#16a34a' : (s.overallScore ?? 0) >= 50 ? '#d97706' : '#dc2626',
               color: '#fff'
@@ -36,13 +36,13 @@ export default function DashboardPreview({ initialScans }: { initialScans?: Scan
               {s.overallGrade ?? 'N/A'}
             </span>
           </div>
-          <div className="mt-2 h-1.5 rounded-full bg-neutral-700 overflow-hidden">
+          <div className="mt-2 h-1.5 rounded-full bg-neutral-200 overflow-hidden">
             <div
-              className="h-full rounded-full bg-neutral-400 transition-all"
+              className="h-full rounded-full bg-neutral-600 transition-all"
               style={{ width: `${Math.min(s.overallScore ?? 0, 100)}%` }}
             />
           </div>
-          <p className="mt-1 text-xs text-neutral-500">
+          <p className="mt-1 text-xs text-neutral-400">
             {s.createdAt ? new Date(s.createdAt).toLocaleDateString() : ''}
           </p>
         </a>
