@@ -8,6 +8,7 @@ import CurvedLoop from "@/components/ui/CurvedLoop"
 import Strands from "@/components/ui/Strands"
 import { DocsSection } from "@/components/blocks/docs-section"
 import DashboardPreview from "@/components/ui/dashboard-preview"
+import TerminalDemo from "@/components/ui/terminal-demo"
 import LandingNav from "@/components/layout/landing-nav"
 import { getSession } from "@/lib/session"
 import { getScans } from "@/lib/firestore-service"
@@ -79,14 +80,17 @@ export default async function Home() {
               </Button>
             </Link>
           </div>
-          <div className="mt-16 mx-auto max-w-4xl w-full rounded-xl border border-[#e5e5e5] bg-white/90 backdrop-blur-sm overflow-hidden shadow-[rgba(0,0,0,0.05)_0px_1px_2px_0px]">
-            <div className="flex items-center gap-1.5 px-4 py-3 border-b border-[#e5e5e5] bg-white/80">
-              <span className="size-2 rounded-full bg-[#e5e5e5]" />
-              <span className="size-2 rounded-full bg-[#e5e5e5]" />
-              <span className="size-2 rounded-full bg-[#e5e5e5]" />
-              <span className="ml-2 text-xs text-[#7a7676] font-mono">dashboard.webcore.dev</span>
+          <div className="mt-16 flex items-start gap-8 ml-[130px]">
+            <div className="max-w-xl w-full rounded-xl border border-neutral-800 bg-neutral-900 overflow-hidden">
+              <div className="flex items-center gap-1.5 px-4 py-3 border-b border-neutral-700 bg-neutral-800">
+                <span className="h-3 w-3 rounded-full bg-red-500 transition-colors hover:bg-red-600" />
+                <span className="h-3 w-3 rounded-full bg-yellow-500 transition-colors hover:bg-yellow-600" />
+                <span className="h-3 w-3 rounded-full bg-green-500 transition-colors hover:bg-green-600" />
+                <span className="ml-2 text-xs text-neutral-400 font-mono">dashboard.webcore.dev</span>
+              </div>
+              <DashboardPreview initialScans={recentScans} />
             </div>
-            <DashboardPreview initialScans={recentScans} />
+            <TerminalDemo />
           </div>
         </section>
 

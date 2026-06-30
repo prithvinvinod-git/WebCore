@@ -1,9 +1,10 @@
 "use client"
+import Link from "next/link"
 import './credits-button.css'
 
-export default function CreditsButton({ children }: { children?: React.ReactNode }) {
-  return (
-    <button type="button" className="credits-button">
+export default function CreditsButton({ children, href }: { children?: React.ReactNode; href?: string }) {
+  const content = (
+    <>
       <span className="credits-fold" />
       <div className="credits-points-wrapper">
         {Array.from({ length: 10 }).map((_, i) => (
@@ -16,6 +17,12 @@ export default function CreditsButton({ children }: { children?: React.ReactNode
         </svg>
         {children}
       </span>
-    </button>
+    </>
   )
+
+  if (href) {
+    return <Link href={href} className="credits-button">{content}</Link>
+  }
+
+  return <button type="button" className="credits-button">{content}</button>
 }
